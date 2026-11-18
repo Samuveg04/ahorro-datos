@@ -1,1 +1,23 @@
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHJlc291cmNlcz4KICAgIDwhLS0gRGlzZcOxbyBESUFMIHY1IOKAlCDDum5pY28sIHBybywgaGVjaG8gcGFyYSBBaG9ycm8gVlBOLgogICAgICAgICBGb25kbyBjYXNpIG5lZ3JvLCBoYWxvIGVzbWVyYWxkYSwgbGltYSBjb21vIGFjZW50byB2aXZvLAogICAgICAgICB0YXJqZXRhcyBjcmlzdGFsLCB0ZXh0byBjb24gamVyYXJxdcOtYSBmdWVydGUuIC0tPgogICAgPGNvbG9yIG5hbWU9ImJnIj4jMDUwODBGPC9jb2xvcj4KICAgIDxjb2xvciBuYW1lPSJiZ19kZWVwIj4jMEIxMDE3PC9jb2xvcj4KICAgIDxjb2xvciBuYW1lPSJjYXJkIj4jMTExOTI3PC9jb2xvcj4KICAgIDxjb2xvciBuYW1lPSJnbGFzcyI+IzBFMTYyMjwvY29sb3I+CiAgICA8Y29sb3IgbmFtZT0iY2FyZF9ib3JkZXIiPiMxRTI5M0I8L2NvbG9yPgogICAgPGNvbG9yIG5hbWU9ImVtZXJhbGQiPiMxMEI5ODE8L2NvbG9yPgogICAgPGNvbG9yIG5hbWU9ImVtZXJhbGRfZGFyayI+IzA1OTY2OTwvY29sb3I+CiAgICA8Y29sb3IgbmFtZT0ibGltZSI+I0EzRTYzNTwvY29sb3I+CiAgICA8Y29sb3IgbmFtZT0iZ29sZCI+I0Y1OUUwQjwvY29sb3I+CiAgICA8Y29sb3IgbmFtZT0idGV4dF9wcmltYXJ5Ij4jRjFGNUY5PC9jb2xvcj4KICAgIDxjb2xvciBuYW1lPSJ0ZXh0X3NlY29uZGFyeSI+Izk0QTNCODwvY29sb3I+CiAgICA8Y29sb3IgbmFtZT0idGV4dF9tdXRlZCI+IzY0NzQ4QjwvY29sb3I+CiAgICA8Y29sb3IgbmFtZT0icmVkIj4jRUY0NDQ0PC9jb2xvcj4KICAgIDxjb2xvciBuYW1lPSJ3aGl0ZSI+I0ZGRkZGRjwvY29sb3I+CiAgICA8IS0tIERpc2XDsW8gdjcgIkNPTlNPTEEiOiBpbnRlcnJ1cHRvciB5IHRhcmpldGFzIHPDs2xpZGFzLiAtLT4KICAgIDxjb2xvciBuYW1lPSJzd2l0Y2hfb2ZmIj4jMTYxRTJCPC9jb2xvcj4KICAgIDxjb2xvciBuYW1lPSJzd2l0Y2hfYm9yZGVyIj4jMjYzNDQ5PC9jb2xvcj4KPC9yZXNvdXJjZXM+Cg==
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Diseño DIAL v5 — único, pro, hecho para Ahorro VPN.
+         Fondo casi negro, halo esmeralda, lima como acento vivo,
+         tarjetas cristal, texto con jerarquía fuerte. -->
+    <color name="bg">#05080F</color>
+    <color name="bg_deep">#0B1017</color>
+    <color name="card">#111927</color>
+    <color name="glass">#0E1622</color>
+    <color name="card_border">#1E293B</color>
+    <color name="emerald">#10B981</color>
+    <color name="emerald_dark">#059669</color>
+    <color name="lime">#A3E635</color>
+    <color name="gold">#F59E0B</color>
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_muted">#64748B</color>
+    <color name="red">#EF4444</color>
+    <color name="white">#FFFFFF</color>
+    <!-- Diseño v7 "CONSOLA": interruptor y tarjetas sólidas. -->
+    <color name="switch_off">#161E2B</color>
+    <color name="switch_border">#263449</color>
+</resources>
