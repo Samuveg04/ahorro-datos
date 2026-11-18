@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- App VPN Ahorro — AndroidManifest -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ahorro.vpn">
+<!-- Corregido 18 nov 2026:
+     - Sin package="..." (AGP 8+ lo saca de namespace en build.gradle.kts).
+     - Tema propio Theme.AhorroVPN, no Theme.Material3... directo.
+     - GoBackend$VpnService declarado: es el que crea el TUN de WireGuard.
+     - AhorroVpnService ya no es VpnService, es un Service en primer plano
+       con foregroundServiceType="specialUse" (obligatorio en Android 14).
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
         android:label="Ahorro VPN"
-        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+        android:theme="@style/Theme.AhorroVPN">
 
         <activity
             android:name=".MainActivity"
@@ -22,10 +29,16 @@
             </intent-filter>
         </activity>
 
-        <!-- ESTE es el corazón: el VpnService.
-             Sin BIND_VPN_SERVICE Android no te deja crear el túnel. -->
+        <!-- Servicio en primer plano que maneja el túnel (no crea el TUN a mano). -->
         <service
             android:name=".AhorroVpnService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
+        <!-- ESTE es el VpnService real de WireGuard. Sin él, GoBackend no
+             puede crear el TUN y el tráfico se queda sin salida. -->
+        <service
+            android:name="com.wireguard.android.backend.GoBackend$VpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:exported="false">
             <intent-filter>
