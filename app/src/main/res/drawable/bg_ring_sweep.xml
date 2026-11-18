@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Anillo giratorio del núcleo (diseño v6 CORE).
+     Banda circular con degradado barrido esmeralda → lima:
+     al girar se ve el movimiento. El dial va encima, centrado. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="ring"
+    android:innerRadiusRatio="2.4"
+    android:thicknessRatio="80"
+    android:useLevel="false">
+    <gradient
+        android:type="sweep"
+        android:startColor="#A3E635"
+        android:centerColor="#10B981"
+        android:endColor="#A3E635" />
+</shape>
