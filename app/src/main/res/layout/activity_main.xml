@@ -223,5 +223,37 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Registro / Log - lo pidió Sam: la app TIENE que tener un log -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registro"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Toca el registro para copiarlo"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/txtLog"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"
+                android:text="Sin eventos todavía."
+                android:textColor="@color/text_primary"
+                android:textSize="11sp"
+                android:typeface="monospace" />
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
