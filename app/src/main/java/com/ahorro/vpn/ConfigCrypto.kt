@@ -1,1 +1,64 @@
-cGFja2FnZSBjb20uYWhvcnJvLnZwbgoKaW1wb3J0IGphdmEuc2VjdXJpdHkuTWVzc2FnZURpZ2VzdAppbXBvcnQgamF2YS5zZWN1cml0eS5TZWN1cmVSYW5kb20KaW1wb3J0IGphdmF4LmNyeXB0by5DaXBoZXIKaW1wb3J0IGphdmF4LmNyeXB0by5zcGVjLkdDTVBhcmFtZXRlclNwZWMKaW1wb3J0IGphdmF4LmNyeXB0by5zcGVjLlNlY3JldEtleVNwZWMKCi8qKgogKiBDb25maWcgY2lmcmFkYSAoLmFob3JybyksIHBlZGlkbyBwb3IgU2FtIDE4IG5vdiAyMDI2OgogKiBlbCBhcmNoaXZvIGRlIGNvbmZpZyBubyBzZSBwdWVkZSBsZWVyIGFicmnDqW5kb2xvLCB2YSBjaWZyYWRvLgogKiAtIEFFUy0yNTYtR0NNLCBjbGF2ZSA9IFNIQS0yNTYgZGUgdW5hIGZyYXNlIGZpamEgY29tcGlsYWRhIGVuIGxhIGFwcC4KICogLSBGb3JtYXRvOiAiQUhPUlJPMSIgKDcgYnl0ZXMpICsgSVYgZGUgMTIgYnl0ZXMgKyBjaWZyYWRvICsgdGFnLgogKiAtIExhIGFwcCBkZXNjaWZyYSBhbCBpbXBvcnRhciB5IGx1ZWdvIGRldGVjdGEgZWwgdGlwbyBpZ3VhbCBxdWUgYW50ZXMKICogICAoW0ludGVyZmFjZV0vW1BlZXJdID0gV2lyZUd1YXJkLCBbTG9jYWxdID0gbG9jYWwpLgogKiAtIEVsIHNlcnZpZG9yIGNpZnJhIGNvbiB3aXJlZ3VhcmQtZmluYWwvc2VydmVyL2NpZnJhci1jb25maWcuc2gsCiAqICAgcXVlIHVzYSBsYSBtaXNtYSBmcmFzZSB5IGVsIG1pc21vIGZvcm1hdG8uCiAqCiAqIEhPTkVTVE86IGxhIGNsYXZlIHZpdmUgZGVudHJvIGRlIGxhIGFwcCwgYXPDrSBxdWUgZXN0byBwcm90ZWdlIGNvbnRyYQogKiBxdWllbiBhYnJlIGVsIGFyY2hpdm8gcG9yIGN1cmlvc2lkYWQgbyBsbyBpbnRlcmNlcHRhIHBvciBlbCBjYW1pbm8sCiAqIG5vIGNvbnRyYSBxdWllbiBkZXNjb21waWxlIGxhIEFQSyBidXNjYW5kbyBsYSBjbGF2ZS4gUGFyYSBzZWd1cmlkYWQKICogcmVhbCBoYXLDrWEgZmFsdGEgdW5hIGNvbnRyYXNlw7FhIHF1ZSBjYWRhIGFtaWdvIHRlY2xlZSBhbCBpbXBvcnRhci4KICovCm9iamVjdCBDb25maWdDcnlwdG8gewogICAgcHJpdmF0ZSBjb25zdCB2YWwgTUFHSUMgPSAiQUhPUlJPMSIKICAgIHByaXZhdGUgY29uc3QgdmFsIFBBU1NQSFJBU0UgPSAiQWhvcnJvVlBOLWNvbmZpZy0yMDI2IgogICAgcHJpdmF0ZSBjb25zdCB2YWwgR0NNX1RBR19CSVRTID0gMTI4CiAgICBwcml2YXRlIGNvbnN0IHZhbCBJVl9CWVRFUyA9IDEyCgogICAgcHJpdmF0ZSBmdW4ga2V5KCk6IFNlY3JldEtleVNwZWMgewogICAgICAgIHZhbCBkaWdlc3QgPSBNZXNzYWdlRGlnZXN0LmdldEluc3RhbmNlKCJTSEEtMjU2IikKICAgICAgICB2YWwgYnl0ZXMgPSBkaWdlc3QuZGlnZXN0KFBBU1NQSFJBU0UudG9CeXRlQXJyYXkoQ2hhcnNldHMuVVRGXzgpKQogICAgICAgIHJldHVybiBTZWNyZXRLZXlTcGVjKGJ5dGVzLCAiQUVTIikKICAgIH0KCiAgICBmdW4gaXNFbmNyeXB0ZWQoZGF0YTogQnl0ZUFycmF5KTogQm9vbGVhbiB7CiAgICAgICAgaWYgKGRhdGEuc2l6ZSA8IE1BR0lDLmxlbmd0aCkgcmV0dXJuIGZhbHNlCiAgICAgICAgcmV0dXJuIFN0cmluZyhkYXRhLCAwLCBNQUdJQy5sZW5ndGgsIENoYXJzZXRzLlVTX0FTQ0lJKSA9PSBNQUdJQwogICAgfQoKICAgIGZ1biBlbmNyeXB0KHBsYWluVGV4dDogU3RyaW5nKTogQnl0ZUFycmF5IHsKICAgICAgICB2YWwgaXYgPSBCeXRlQXJyYXkoSVZfQllURVMpCiAgICAgICAgU2VjdXJlUmFuZG9tKCkubmV4dEJ5dGVzKGl2KQogICAgICAgIHZhbCBjaXBoZXIgPSBDaXBoZXIuZ2V0SW5zdGFuY2UoIkFFUy9HQ00vTm9QYWRkaW5nIikKICAgICAgICBjaXBoZXIuaW5pdChDaXBoZXIuRU5DUllQVF9NT0RFLCBrZXkoKSwgR0NNUGFyYW1ldGVyU3BlYyhHQ01fVEFHX0JJVFMsIGl2KSkKICAgICAgICB2YWwgY2lwaGVyVGV4dCA9IGNpcGhlci5kb0ZpbmFsKHBsYWluVGV4dC50b0J5dGVBcnJheShDaGFyc2V0cy5VVEZfOCkpCiAgICAgICAgcmV0dXJuIE1BR0lDLnRvQnl0ZUFycmF5KENoYXJzZXRzLlVTX0FTQ0lJKSArIGl2ICsgY2lwaGVyVGV4dAogICAgfQoKICAgIC8qKiBOdWxsIHNpIG5vIGVzIHVuIGFyY2hpdm8gLmFob3JybyB2w6FsaWRvIG8gZXN0w6EgZGHDsWFkby4gKi8KICAgIGZ1biBkZWNyeXB0KGRhdGE6IEJ5dGVBcnJheSk6IFN0cmluZz8gewogICAgICAgIHJldHVybiB0cnkgewogICAgICAgICAgICBpZiAoIWlzRW5jcnlwdGVkKGRhdGEpKSByZXR1cm4gbnVsbAogICAgICAgICAgICB2YWwgaXYgPSBkYXRhLmNvcHlPZlJhbmdlKE1BR0lDLmxlbmd0aCwgTUFHSUMubGVuZ3RoICsgSVZfQllURVMpCiAgICAgICAgICAgIHZhbCBjaXBoZXJUZXh0ID0gZGF0YS5jb3B5T2ZSYW5nZShNQUdJQy5sZW5ndGggKyBJVl9CWVRFUywgZGF0YS5zaXplKQogICAgICAgICAgICB2YWwgY2lwaGVyID0gQ2lwaGVyLmdldEluc3RhbmNlKCJBRVMvR0NNL05vUGFkZGluZyIpCiAgICAgICAgICAgIGNpcGhlci5pbml0KENpcGhlci5ERUNSWVBUX01PREUsIGtleSgpLCBHQ01QYXJhbWV0ZXJTcGVjKEdDTV9UQUdfQklUUywgaXYpKQogICAgICAgICAgICB2YWwgcGxhaW4gPSBjaXBoZXIuZG9GaW5hbChjaXBoZXJUZXh0KQogICAgICAgICAgICBTdHJpbmcocGxhaW4sIENoYXJzZXRzLlVURl84KQogICAgICAgIH0gY2F0Y2ggKF86IEV4Y2VwdGlvbikgewogICAgICAgICAgICBudWxsCiAgICAgICAgfQogICAgfQp9Cg==
+package com.ahorro.vpn
+
+import java.security.MessageDigest
+import java.security.SecureRandom
+import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.SecretKeySpec
+
+/**
+ * Config cifrada (.ahorro), pedido por Sam 18 nov 2026:
+ * el archivo de config no se puede leer abriéndolo, va cifrado.
+ * - AES-256-GCM, clave = SHA-256 de una frase fija compilada en la app.
+ * - Formato: "AHORRO1" (7 bytes) + IV de 12 bytes + cifrado + tag.
+ * - La app descifra al importar y luego detecta el tipo igual que antes
+ *   ([Interface]/[Peer] = WireGuard, [Local] = local).
+ * - El servidor cifra con wireguard-final/server/cifrar-config.sh,
+ *   que usa la misma frase y el mismo formato.
+ *
+ * HONESTO: la clave vive dentro de la app, así que esto protege contra
+ * quien abre el archivo por curiosidad o lo intercepta por el camino,
+ * no contra quien descompile la APK buscando la clave. Para seguridad
+ * real haría falta una contraseña que cada amigo teclee al importar.
+ */
+object ConfigCrypto {
+    private const val MAGIC = "AHORRO1"
+    private const val PASSPHRASE = "AhorroVPN-config-2026"
+    private const val GCM_TAG_BITS = 128
+    private const val IV_BYTES = 12
+
+    private fun key(): SecretKeySpec {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val bytes = digest.digest(PASSPHRASE.toByteArray(Charsets.UTF_8))
+        return SecretKeySpec(bytes, "AES")
+    }
+
+    fun isEncrypted(data: ByteArray): Boolean {
+        if (data.size < MAGIC.length) return false
+        return String(data, 0, MAGIC.length, Charsets.US_ASCII) == MAGIC
+    }
+
+    fun encrypt(plainText: String): ByteArray {
+        val iv = ByteArray(IV_BYTES)
+        SecureRandom().nextBytes(iv)
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.ENCRYPT_MODE, key(), GCMParameterSpec(GCM_TAG_BITS, iv))
+        val cipherText = cipher.doFinal(plainText.toByteArray(Charsets.UTF_8))
+        return MAGIC.toByteArray(Charsets.US_ASCII) + iv + cipherText
+    }
+
+    /** Null si no es un archivo .ahorro válido o está dañado. */
+    fun decrypt(data: ByteArray): String? {
+        return try {
+            if (!isEncrypted(data)) return null
+            val iv = data.copyOfRange(MAGIC.length, MAGIC.length + IV_BYTES)
+            val cipherText = data.copyOfRange(MAGIC.length + IV_BYTES, data.size)
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+            cipher.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(GCM_TAG_BITS, iv))
+            val plain = cipher.doFinal(cipherText)
+            String(plain, Charsets.UTF_8)
+        } catch (_: Exception) {
+            null
+        }
+    }
+}
