@@ -8,6 +8,8 @@ import android.content.Intent
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +38,36 @@ class MainActivity : AppCompatActivity() {
     private var vpnOn = false
     private var serviceStarted = false
     private var startTimeMs: Long = 0L
+    private val statsHandler = Handler(Looper.getMainLooper())
+    private val statsRunnable = object : Runnable {
+        override fun run() {
+            if (vpnOn) {
+                updateStatsUi()
+                statsHandler.postDelayed(this, 1000)
+            }
+        }
+    }
+
+    private fun formatBytes(bytes: Long): String {
+        return when {
+            bytes < 1024 -> "$bytes B"
+            bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
+            bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / 1024.0 / 1024.0)
+            else -> String.format("%.2f GB", bytes / 1024.0 / 1024.0 / 1024.0)
+        }
+    }
+
+    private fun updateStatsUi() {
+        try {
+            val (rx, tx) = TunnelManager.getSessionStats()
+            findViewById<TextView>(R.id.txtUsed)?.text = formatBytes(rx)
+            findViewById<TextView>(R.id.txtSaved)?.text = formatBytes(tx)
+            val elapsed = (System.currentTimeMillis() - startTimeMs) / 1000
+            findViewById<TextView>(R.id.txtTime)?.text =
+                String.format("%02d:%02d", elapsed / 60, elapsed % 60)
+        } catch (_: Exception) {
+        }
+    }
 
     private val vpnPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -63,6 +95,13 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener {
             if (!vpnOn) {
                 VpnLog.info("Botón Conectar tocado.")
+                // Sin config global no se conecta ni se finge conectado.
+                // Lo pidió Sam: si no hay config, no debería ni conectar.
+                if (WgConfig.CONFIG.trim().isBlank()) {
+                    VpnLog.error("Sin config WireGuard global. No se conecta.")
+                    Toast.makeText(this, "Sin config: la app todavía no trae la config del servidor", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
                 val intent = VpnService.prepare(this)
                 if (intent != null) {
                     vpnPermissionLauncher.launch(intent)
@@ -82,47 +121,18 @@ class MainActivity : AppCompatActivity() {
             VpnLog.info("Log copiado al portapapeles.")
         }
 
-        // Config WireGuard: se pega el texto de sam.conf y se guarda en
-        // SharedPreferences "ahorro_vpn_prefs", clave "wg_config".
-        // El servicio la lee de ahí al conectar. Sin ella, no conecta.
-        val edtConfig = findViewById<android.widget.EditText>(R.id.edtConfig)
-        val btnSave = findViewById<MaterialButton>(R.id.btnSaveConfig)
-        val btnClear = findViewById<MaterialButton>(R.id.btnClearConfig)
-        val prefs = getSharedPreferences(AhorroVpnService.PREFS, Context.MODE_PRIVATE)
-        val saved = prefs.getString(AhorroVpnService.KEY_WG_CONFIG, null)
-        if (!saved.isNullOrBlank()) {
-            edtConfig.setText(saved)
-            findViewById<TextView>(R.id.txtConfigStatus).text = "Config guardada ✓"
-        }
-        btnSave.setOnClickListener {
-            val text = edtConfig.text.toString().trim()
-            if (text.isBlank()) {
-                Toast.makeText(this, "Pega primero el texto de sam.conf", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if (!text.contains("[Interface]") || !text.contains("[Peer]")) {
-                Toast.makeText(this, "Ese texto no parece una config WireGuard", Toast.LENGTH_LONG).show()
-                VpnLog.warn("Config rechazada: no tiene [Interface] ni [Peer].")
-                return@setOnClickListener
-            }
-            prefs.edit().putString(AhorroVpnService.KEY_WG_CONFIG, text).apply()
-            findViewById<TextView>(R.id.txtConfigStatus).text = "Config guardada ✓"
-            Toast.makeText(this, "Config guardada", Toast.LENGTH_SHORT).show()
-            VpnLog.info("Config WireGuard guardada.")
-        }
-        btnClear.setOnClickListener {
-            prefs.edit().remove(AhorroVpnService.KEY_WG_CONFIG).apply()
-            edtConfig.setText("")
-            findViewById<TextView>(R.id.txtConfigStatus).text = "Sin config guardada"
-            Toast.makeText(this, "Config borrada", Toast.LENGTH_SHORT).show()
-            VpnLog.info("Config WireGuard borrada.")
-        }
+        // Config GLOBAL: viene compilada en WgConfig, no se pega en la app.
+        // Aquí solo se muestra si está incluida o pendiente.
+        findViewById<TextView>(R.id.txtConfigStatus)?.text =
+            if (WgConfig.CONFIG.trim().isBlank()) "Config global pendiente — todavía no trae la del servidor"
+            else "Config global incluida ✓"
 
         VpnLog.addListener(logListener)
         updateUi()
     }
 
     override fun onDestroy() {
+        statsHandler.removeCallbacks(statsRunnable)
         VpnLog.removeListener(logListener)
         super.onDestroy()
     }
@@ -146,21 +156,22 @@ class MainActivity : AppCompatActivity() {
         startTimeMs = System.currentTimeMillis()
         VpnLog.info("VPN encendida desde la app.")
         updateUi()
+        statsHandler.removeCallbacks(statsRunnable)
+        statsHandler.post(statsRunnable)
     }
 
     private fun stopVpn() {
-        // Si el servicio nunca arrancó (por ejemplo, falló por falta de
-        // config), NO le mandes un STOP: eso creaba una instancia nueva
-        // solo para pararla y tumbaba la app. Solo actualiza la UI.
+        statsHandler.removeCallbacks(statsRunnable)
+        // ANTES: se mandaba el STOP con startForegroundService(). Eso crea
+        // una instancia NUEVA del servicio solo para pararlo, y esa
+        // instancia llamaba a stopForeground sin haber arrancado el
+        // foreground — ahí se cerraba la app al tocar Desconectar.
+        // AHORA: stopService() no crea ninguna instancia, solo para el
+        // servicio si está corriendo. Y si nunca arrancó, no se le manda nada.
         if (serviceStarted) {
-            val intent = Intent(this, AhorroVpnService::class.java)
-            intent.action = AhorroVpnService.ACTION_STOP
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(intent)
-                } else {
-                    startService(intent)
-                }
+                val intent = Intent(this, AhorroVpnService::class.java)
+                stopService(intent)
             } catch (e: Exception) {
                 VpnLog.error("No se pudo parar el servicio", e)
             }
@@ -172,44 +183,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUi() {
-        val btn = findViewById<MaterialButton>(R.id.btnToggle)
-        val status = findViewById<TextView>(R.id.txtStatus)
-        val pill = findViewById<TextView>(R.id.txtStatusPill)
-        val server = findViewById<TextView>(R.id.txtServer)
-        val used = findViewById<TextView>(R.id.txtUsed)
-        val saved = findViewById<TextView>(R.id.txtSaved)
-        val time = findViewById<TextView>(R.id.txtTime)
-        val dial = findViewById<android.widget.FrameLayout>(R.id.dialView)
-        val dialState = findViewById<TextView>(R.id.txtDialState)
-        val dialIp = findViewById<TextView>(R.id.txtDialIp)
-        if (vpnOn) {
-            btn.text = "DESCONECTAR"
-            status.text = "Protegido - Ahorrando"
-            pill.text = "●  ONLINE"
-            pill.setBackgroundResource(R.drawable.bg_pill_on)
-            dial.setBackgroundResource(R.drawable.bg_dial_on)
-            dialState.text = "ON"
-            dialState.setTextColor(getColor(R.color.lime))
-            dialIp.text = "Tu IP está oculta"
-            dialIp.setTextColor(getColor(R.color.lime))
-            server.text = "Servidor Ahorro - WireGuard 10.8.0.1"
-            used.text = "Activo"
-            saved.text = "-"
-            time.text = "00:00"
-        } else {
-            btn.text = "CONECTAR  →"
-            status.text = "Desconectado"
-            pill.text = "●  OFFLINE"
-            pill.setBackgroundResource(R.drawable.bg_pill_off)
-            dial.setBackgroundResource(R.drawable.bg_dial_off)
-            dialState.text = "OFF"
-            dialState.setTextColor(getColor(R.color.text_primary))
-            dialIp.text = "Tu IP está expuesta"
-            dialIp.setTextColor(getColor(R.color.red))
-            server.text = "No conectado"
-            used.text = "0 MB"
-            saved.text = "0 MB"
-            time.text = "00:00"
+        try {
+            val btn = findViewById<MaterialButton>(R.id.btnToggle) ?: return
+            val status = findViewById<TextView>(R.id.txtStatus)
+            val pill = findViewById<TextView>(R.id.txtStatusPill)
+            val server = findViewById<TextView>(R.id.txtServer)
+            val used = findViewById<TextView>(R.id.txtUsed)
+            val saved = findViewById<TextView>(R.id.txtSaved)
+            val time = findViewById<TextView>(R.id.txtTime)
+            val dial = findViewById<android.widget.FrameLayout>(R.id.dialView)
+            val dialState = findViewById<TextView>(R.id.txtDialState)
+            val dialIp = findViewById<TextView>(R.id.txtDialIp)
+            if (vpnOn) {
+                btn.text = "DESCONECTAR"
+                status?.text = "Protegido - Ahorrando"
+                pill?.text = "●  ONLINE"
+                pill?.setBackgroundResource(R.drawable.bg_pill_on)
+                dial?.setBackgroundResource(R.drawable.bg_dial_on)
+                dialState?.text = "ON"
+                dialState?.setTextColor(getColor(R.color.lime))
+                dialIp?.text = "Tu IP está oculta"
+                dialIp?.setTextColor(getColor(R.color.lime))
+                server?.text = "Servidor Ahorro - WireGuard 10.8.0.1"
+            } else {
+                btn.text = "CONECTAR  →"
+                status?.text = "Desconectado"
+                pill?.text = "●  OFFLINE"
+                pill?.setBackgroundResource(R.drawable.bg_pill_off)
+                dial?.setBackgroundResource(R.drawable.bg_dial_off)
+                dialState?.text = "OFF"
+                dialState?.setTextColor(getColor(R.color.text_primary))
+                dialIp?.text = "Tu IP está expuesta"
+                dialIp?.setTextColor(getColor(R.color.red))
+                server?.text = "No conectado"
+                used?.text = "0 B"
+                saved?.text = "0 B"
+                time?.text = "00:00"
+            }
+        } catch (e: Exception) {
+            VpnLog.error("Fallo al actualizar la pantalla", e)
         }
         updateLogUi()
     }
