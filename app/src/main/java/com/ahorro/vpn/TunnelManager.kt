@@ -86,7 +86,10 @@ object TunnelManager {
             val t = tunnel
             if (b != null && t != null) {
                 val s = b.getStatistics(t)
-                Pair(s.totalRx, s.totalTx)
+                // totalRx/totalTx son MÉTODOS en la librería WireGuard
+                // (Statistics.totalRx()/totalTx()), no campos. Escribir
+                // s.totalRx sin paréntesis no compila y tumbaba el build.
+                Pair(s.totalRx(), s.totalTx())
             } else {
                 Pair(TrafficStats.getUidRxBytes(Process.myUid()), TrafficStats.getUidTxBytes(Process.myUid()))
             }
