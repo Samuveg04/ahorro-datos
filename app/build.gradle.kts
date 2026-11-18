@@ -37,5 +37,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("com.wireguard.android:tunnel:1.0.20231018")
+    implementation("com.wireguard.android:tunnel:1.0.20260102")
 }
