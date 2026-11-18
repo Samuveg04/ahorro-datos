@@ -1,1 +1,7 @@
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBCb3TDs24gcHJpbmNpcGFsIHY3OiBlc21lcmFsZGEgc8OzbGlkbywgZXNxdWluYXMgMTJkcC4gLS0+CjxzaGFwZSB4bWxuczphbmRyb2lkPSJodHRwOi8vc2NoZW1hcy5hbmRyb2lkLmNvbS9hcGsvcmVzL2FuZHJvaWQiCiAgICBhbmRyb2lkOnNoYXBlPSJyZWN0YW5nbGUiPgogICAgPHNvbGlkIGFuZHJvaWQ6Y29sb3I9IkBjb2xvci9lbWVyYWxkIiAvPgogICAgPGNvcm5lcnMgYW5kcm9pZDpyYWRpdXM9IjEyZHAiIC8+Cjwvc2hhcGU+Cg==
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Botón principal v7: esmeralda sólido, esquinas 12dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/emerald" />
+    <corners android:radius="12dp" />
+</shape>
