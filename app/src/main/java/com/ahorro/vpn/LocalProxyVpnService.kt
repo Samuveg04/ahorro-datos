@@ -19,7 +19,7 @@ import java.security.SecureRandom
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -112,6 +112,9 @@ class LocalProxyVpnService : VpnService() {
     private var readerThread: Thread? = null
     private var sweeperThread: Thread? = null
     private var executor: ExecutorService? = null
+    // Pool aparte solo para DNS: las consultas son cortas y no pueden
+    // quedarse sin hilo detrás de conexiones TCP largas.
+    private var dnsExecutor: ExecutorService? = null
     private var stopped = false
     private var foregroundStarted = false
     // Conjuntos sincronizados: los tocan el hilo lector y el pool a la vez.
@@ -246,16 +249,22 @@ class LocalProxyVpnService : VpnService() {
         }
         iface = vpnInterface
         tunOut = FileOutputStream(vpnInterface.fileDescriptor)
-        // Pool ACOTADO: antes era newCachedThreadPool (sin límite) y al
-        // conectar el teléfono dispara decenas de conexiones a la vez:
-        // cada una pedía un hilo nuevo (1 MB de pila cada uno) hasta que
-        // Android no pudo crear más (pthread_create) y mató la app.
-        // Ahora hay 32 hilos como máximo y el que sobra se rechaza
-        // limpio (RST al cliente, que reintenta), nunca se cuelga.
+        // Pool TCP/UDP con COLA: antes era SynchronousQueue (sin cola) y
+        // con 32 hilos: las conexiones largas ocupaban todos los hilos y
+        // cada conexión nueva y cada consulta DNS se rechazaban al momento
+        // (RST / sin respuesta) — por eso WhatsApp no conectaba, Chrome
+        // cancelaba una pila de cosas y YouTube iba lento. Con cola, la
+        // conexión espera su turno en vez de morir, y el DNS tiene su
+        // propio pool para no quedarse nunca sin hilo.
         executor = ThreadPoolExecutor(
-            4, 32,
+            8, 64,
+            30L, TimeUnit.SECONDS,
+            LinkedBlockingQueue<Runnable>(512)
+        )
+        dnsExecutor = ThreadPoolExecutor(
+            2, 16,
             60L, TimeUnit.SECONDS,
-            SynchronousQueue<Runnable>()
+            LinkedBlockingQueue<Runnable>(256)
         )
         running = true
         VpnLog.info("Modo local PRO activo: todo el tráfico pasa por la app.")
@@ -306,6 +315,16 @@ class LocalProxyVpnService : VpnService() {
         }
     }
 
+    /** Igual que runOnExecutor, pero en el pool exclusivo de DNS. */
+    private fun runOnDnsExecutor(task: () -> Unit): Boolean {
+        return try {
+            dnsExecutor?.execute(task)
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     private fun readLoop(vpnInterface: ParcelFileDescriptor) {
         val buffer = ByteArray(32767)
         try {
@@ -338,7 +357,7 @@ class LocalProxyVpnService : VpnService() {
                 Thread.sleep(30_000)
                 val now = System.currentTimeMillis()
                 for ((_, c) in tcpConns) {
-                    if (now - c.lastActivity > 120_000) closeConn(c, sendRst = false)
+                    if (now - c.lastActivity > 60_000) closeConn(c, sendRst = false)
                 }
                 for ((_, s) in udpSessions) {
                     if (now - s.lastActivity > 60_000) closeUdp(s)
@@ -820,7 +839,7 @@ class LocalProxyVpnService : VpnService() {
         if (dns.size < 12) return
         val name = parseQName(dns)
         if (name == null) {
-            runOnExecutor { forwardDns(dns, srcIp, srcPort, null) }
+            runOnDnsExecutor { forwardDns(dns, srcIp, srcPort, null) }
             return
         }
         if (Blocklist.isBlocked(name)) {
@@ -831,7 +850,7 @@ class LocalProxyVpnService : VpnService() {
             val resp = buildNxDomain(dns)
             writeDnsPacket(srcIp, srcPort, resp)
         } else {
-            runOnExecutor { forwardDns(dns, srcIp, srcPort, name) }
+            runOnDnsExecutor { forwardDns(dns, srcIp, srcPort, name) }
         }
     }
 
@@ -1055,6 +1074,8 @@ class LocalProxyVpnService : VpnService() {
         iface = null
         try { executor?.shutdownNow() } catch (_: Exception) {}
         executor = null
+        try { dnsExecutor?.shutdownNow() } catch (_: Exception) {}
+        dnsExecutor = null
         safeStopForeground()
         try { stopSelf() } catch (_: Exception) {}
     }
@@ -1070,6 +1091,8 @@ class LocalProxyVpnService : VpnService() {
         iface = null
         try { executor?.shutdownNow() } catch (_: Exception) {}
         executor = null
+        try { dnsExecutor?.shutdownNow() } catch (_: Exception) {}
+        dnsExecutor = null
         try { VpnLog.saveToFile(this) } catch (_: Exception) {}
         super.onDestroy()
     }
