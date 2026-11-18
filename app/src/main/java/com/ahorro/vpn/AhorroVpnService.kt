@@ -11,18 +11,11 @@ import androidx.core.app.NotificationCompat
 
 /**
  * Servicio en primer plano que maneja el túnel.
- *
- * ANTES era un VpnService que creaba un TUN a mano con Builder().establish()
- * y nunca llamaba a startForeground() ni a WireGuard: en Android 8+ lo
- * mataba el sistema en segundos, y aunque no lo matara, el tráfico no
- * salía a ningún lado porque el TUN no estaba conectado al servidor.
- *
- * AHORA:
- * - Es un Service normal en primer plano (notificación obligatoria).
- * - No crea el TUN a mano: lo crea GoBackend (su VpnService está en el Manifest).
- * - Lee la config wg-quick de SharedPreferences ("wg_config"). Si no hay
- *   config, NO finge estar conectado: lo registra en VpnLog y se detiene.
- * - Todo queda en VpnLog.
+ * Corregido 18 nov 2026 — crash al desconectar:
+ * - stopTunnel() era llamado 2 veces (desde ACTION_STOP y desde onDestroy),
+ *   y stopForeground() sin haber arrancado el foreground tumba el proceso.
+ *   Ahora hay un flag `stopped` y `foregroundStarted`, y todo va con try/catch.
+ * - onDestroy() ya NO llama a TunnelManager.disconnect() si ya se paró.
  */
 class AhorroVpnService : Service() {
 
@@ -35,11 +28,17 @@ class AhorroVpnService : Service() {
         const val KEY_WG_CONFIG = "wg_config"
     }
 
+    private var foregroundStarted = false
+    private var stopped = false
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            ACTION_START -> startTunnel()
+            ACTION_START -> {
+                stopped = false
+                startTunnel()
+            }
             ACTION_STOP -> stopTunnel()
         }
         return START_STICKY
@@ -62,40 +61,72 @@ class AhorroVpnService : Service() {
     }
 
     private fun startTunnel() {
-        createChannel()
-        startForeground(NOTIF_ID, notification("Conectando..."))
+        try {
+            createChannel()
+            startForeground(NOTIF_ID, notification("Conectando..."))
+            foregroundStarted = true
+        } catch (e: Exception) {
+            VpnLog.error("No se pudo arrancar el foreground", e)
+        }
         VpnLog.info("Servicio iniciado. Buscando config WireGuard...")
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val wgConfig = prefs.getString(KEY_WG_CONFIG, null)
         if (wgConfig.isNullOrBlank()) {
             VpnLog.error("Sin config WireGuard. Guarda tu wg_config en Ajustes antes de conectar.")
-            stopForeground(true)
+            safeStopForeground()
             stopSelf()
             return
         }
         TunnelManager.connect(this, wgConfig) { ok, msg ->
             if (ok) {
                 VpnLog.info("VPN conectada: $msg")
-                val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                manager.notify(NOTIF_ID, notification("Protegido - Ahorrando"))
+                try {
+                    val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    manager.notify(NOTIF_ID, notification("Protegido - Ahorrando"))
+                } catch (_: Exception) {}
             } else {
                 VpnLog.error("No se pudo conectar: $msg")
-                stopForeground(true)
+                safeStopForeground()
                 stopSelf()
             }
         }
     }
 
+    private fun safeStopForeground() {
+        if (!foregroundStarted) return
+        try {
+            stopForeground(true)
+        } catch (_: Exception) {
+        } finally {
+            foregroundStarted = false
+        }
+    }
+
     private fun stopTunnel() {
+        if (stopped) return
+        stopped = true
         VpnLog.info("Desconectando VPN...")
-        TunnelManager.disconnect()
-        stopForeground(true)
-        stopSelf()
+        try {
+            TunnelManager.disconnect()
+        } catch (e: Exception) {
+            VpnLog.error("Error al bajar el túnel", e)
+        }
+        safeStopForeground()
+        try {
+            stopSelf()
+        } catch (_: Exception) {}
     }
 
     override fun onDestroy() {
-        TunnelManager.disconnect()
-        VpnLog.saveToFile(this)
+        if (!stopped) {
+            stopped = true
+            try {
+                TunnelManager.disconnect()
+            } catch (_: Exception) {}
+        }
+        try {
+            VpnLog.saveToFile(this)
+        } catch (_: Exception) {}
         super.onDestroy()
     }
 }
