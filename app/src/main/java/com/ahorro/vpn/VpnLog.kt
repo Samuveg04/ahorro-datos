@@ -9,12 +9,9 @@ import java.util.Locale
 
 /**
  * Log de la app VPN — lo pidió Sam: la app TIENE que tener un log.
- *
- * - Guarda las últimas 200 líneas en memoria, con hora local.
- * - Escribe también en logcat (tag AhorroVPN) para verlo con adb.
- * - Guarda en un archivo log.txt en el almacenamiento interno,
- *   para compartirlo o revisarlo después de un fallo.
- * - MainActivity lo muestra en la tarjeta "Registro".
+ * Corregido 18 nov 2026:
+ * - saveToFile() ya NO llama a info() dentro: eso disparaba los listeners
+ *   durante onDestroy() y podía re-entrar y tumbar la app al desconectar.
  */
 object VpnLog {
     private const val TAG = "AhorroVPN"
@@ -23,7 +20,7 @@ object VpnLog {
     private val listeners = mutableListOf<() -> Unit>()
 
     fun addListener(listener: () -> Unit) {
-        listeners.add(listener)
+        if (!listeners.contains(listener)) listeners.add(listener)
     }
 
     fun removeListener(listener: () -> Unit) {
@@ -64,7 +61,7 @@ object VpnLog {
         try {
             val file = File(context.filesDir, "log.txt")
             file.writeText(getAll().joinToString("\n"))
-            info("Log guardado en log.txt (${getAll().size} lineas)")
+            Log.d(TAG, "Log guardado en log.txt (${getAll().size} lineas)")
         } catch (e: Exception) {
             Log.e(TAG, "No se pudo guardar log.txt", e)
         }
