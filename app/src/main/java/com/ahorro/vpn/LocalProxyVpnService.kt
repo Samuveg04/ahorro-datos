@@ -19,7 +19,9 @@ import java.security.SecureRandom
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.concurrent.thread
@@ -244,7 +246,17 @@ class LocalProxyVpnService : VpnService() {
         }
         iface = vpnInterface
         tunOut = FileOutputStream(vpnInterface.fileDescriptor)
-        executor = Executors.newCachedThreadPool()
+        // Pool ACOTADO: antes era newCachedThreadPool (sin límite) y al
+        // conectar el teléfono dispara decenas de conexiones a la vez:
+        // cada una pedía un hilo nuevo (1 MB de pila cada uno) hasta que
+        // Android no pudo crear más (pthread_create) y mató la app.
+        // Ahora hay 32 hilos como máximo y el que sobra se rechaza
+        // limpio (RST al cliente, que reintenta), nunca se cuelga.
+        executor = ThreadPoolExecutor(
+            4, 32,
+            60L, TimeUnit.SECONDS,
+            SynchronousQueue<Runnable>()
+        )
         running = true
         VpnLog.info("Modo local PRO activo: todo el tráfico pasa por la app.")
         VpnLog.info("Freno de vídeo a 0,5 Mbps en apps y navegador (sin servidor).")
@@ -280,11 +292,17 @@ class LocalProxyVpnService : VpnService() {
 
     // ---------- Bucle principal ----------
 
-    /** Ejecuta en el pool sin tumbar al que llama si el pool ya se apagó. */
-    private fun runOnExecutor(task: () -> Unit) {
-        try {
+    /**
+     * Ejecuta en el pool. Devuelve false si el pool está lleno o apagado:
+     * el que llama debe cerrar la conexión (RST) para que el cliente
+     * reintente, en vez de dejarla colgada.
+     */
+    private fun runOnExecutor(task: () -> Unit): Boolean {
+        return try {
             executor?.execute(task)
+            true
         } catch (_: Exception) {
+            false
         }
     }
 
@@ -501,7 +519,7 @@ class LocalProxyVpnService : VpnService() {
     }
 
     private fun connectSocket(conn: TcpConn) {
-        runOnExecutor {
+        val started = runOnExecutor {
             try {
                 val socket = Socket()
                 protect(socket)
@@ -537,6 +555,8 @@ class LocalProxyVpnService : VpnService() {
                 closeConn(conn, sendRst = true)
             }
         }
+        // El pool estaba lleno: RST inmediato para que el cliente reintente.
+        if (!started) closeConn(conn, sendRst = true)
     }
 
     private fun readFromSocket(conn: TcpConn, socket: Socket) {
@@ -711,7 +731,7 @@ class LocalProxyVpnService : VpnService() {
         val key = "$srcPort|${ipString(dstIp)}|$dstPort"
         var session = udpSessions[key]
         if (session == null) {
-            if (udpSessions.size >= 256) return // tope: no se aceptan más sesiones
+            if (udpSessions.size >= 128) return // tope: no se aceptan más sesiones
             val dstStr = ipString(dstIp)
             val domain = ipToDomain[dstStr]
             val throttled = domain != null && isVideoDomain(domain)
@@ -731,7 +751,7 @@ class LocalProxyVpnService : VpnService() {
     }
 
     private fun startUdpSession(session: UdpSession) {
-        runOnExecutor {
+        val started = runOnExecutor {
             var socket: DatagramSocket? = null
             try {
                 socket = DatagramSocket()
@@ -760,6 +780,7 @@ class LocalProxyVpnService : VpnService() {
                 closeUdp(session)
             }
         }
+        if (!started) closeUdp(session)
     }
 
     private fun closeUdp(session: UdpSession) {
