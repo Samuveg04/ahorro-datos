@@ -179,20 +179,33 @@ class MainActivity : AppCompatActivity() {
         val used = findViewById<TextView>(R.id.txtUsed)
         val saved = findViewById<TextView>(R.id.txtSaved)
         val time = findViewById<TextView>(R.id.txtTime)
+        val dial = findViewById<android.widget.FrameLayout>(R.id.dialView)
+        val dialState = findViewById<TextView>(R.id.txtDialState)
+        val dialIp = findViewById<TextView>(R.id.txtDialIp)
         if (vpnOn) {
-            btn.text = "Desconectar"
+            btn.text = "DESCONECTAR"
             status.text = "Protegido - Ahorrando"
-            pill.text = "Conectado"
+            pill.text = "●  ONLINE"
             pill.setBackgroundResource(R.drawable.bg_pill_on)
+            dial.setBackgroundResource(R.drawable.bg_dial_on)
+            dialState.text = "ON"
+            dialState.setTextColor(getColor(R.color.lime))
+            dialIp.text = "Tu IP está oculta"
+            dialIp.setTextColor(getColor(R.color.lime))
             server.text = "Servidor Ahorro - WireGuard 10.8.0.1"
             used.text = "Activo"
             saved.text = "-"
             time.text = "00:00"
         } else {
-            btn.text = "Conectar"
+            btn.text = "CONECTAR  →"
             status.text = "Desconectado"
-            pill.text = "Apagado"
+            pill.text = "●  OFFLINE"
             pill.setBackgroundResource(R.drawable.bg_pill_off)
+            dial.setBackgroundResource(R.drawable.bg_dial_off)
+            dialState.text = "OFF"
+            dialState.setTextColor(getColor(R.color.text_primary))
+            dialIp.text = "Tu IP está expuesta"
+            dialIp.setTextColor(getColor(R.color.red))
             server.text = "No conectado"
             used.text = "0 MB"
             saved.text = "0 MB"
