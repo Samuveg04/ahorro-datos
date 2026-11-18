@@ -16,9 +16,11 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.security.SecureRandom
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.concurrent.thread
 
@@ -73,8 +75,9 @@ class LocalProxyVpnService : VpnService() {
         private const val VIDEO_BUDGET_PER_WINDOW = (VIDEO_RATE_BYTES_PER_SEC * VIDEO_WINDOW_MS / 1000).toInt()
         private const val MSS = 1400
 
-        @Volatile var blockedCount: Long = 0L
-        @Volatile var forwardedCount: Long = 0L
+        // Contadores atómicos: los tocan el hilo lector, el pool y la UI.
+        val blockedCount = AtomicLong(0L)
+        val forwardedCount = AtomicLong(0L)
         @Volatile var running: Boolean = false
 
         private val rxBytes = AtomicLong(0L)
@@ -109,9 +112,10 @@ class LocalProxyVpnService : VpnService() {
     private var executor: ExecutorService? = null
     private var stopped = false
     private var foregroundStarted = false
-    private val loggedBlocked = mutableSetOf<String>()
-    private val loggedThrottled = mutableSetOf<String>()
-    private var packetId = 0
+    // Conjuntos sincronizados: los tocan el hilo lector y el pool a la vez.
+    private val loggedBlocked = Collections.synchronizedSet(mutableSetOf<String>())
+    private val loggedThrottled = Collections.synchronizedSet(mutableSetOf<String>())
+    private val packetId = AtomicInteger(0)
     private val writeLock = Any()
 
     // IP -> dominio (de las respuestas DNS que damos nosotros).
@@ -276,27 +280,37 @@ class LocalProxyVpnService : VpnService() {
 
     // ---------- Bucle principal ----------
 
+    /** Ejecuta en el pool sin tumbar al que llama si el pool ya se apagó. */
+    private fun runOnExecutor(task: () -> Unit) {
+        try {
+            executor?.execute(task)
+        } catch (_: Exception) {
+        }
+    }
+
     private fun readLoop(vpnInterface: ParcelFileDescriptor) {
-        val input = FileInputStream(vpnInterface.fileDescriptor)
         val buffer = ByteArray(32767)
         try {
-            while (!stopped) {
-                val len = try {
-                    input.read(buffer)
-                } catch (_: Exception) {
-                    break
+            val input = FileInputStream(vpnInterface.fileDescriptor)
+            try {
+                while (!stopped) {
+                    val len = try {
+                        input.read(buffer)
+                    } catch (_: Exception) {
+                        break
+                    }
+                    if (len <= 0) continue
+                    txBytes.addAndGet(len.toLong())
+                    val packet = buffer.copyOf(len)
+                    try {
+                        handlePacket(packet)
+                    } catch (_: Exception) {
+                    }
                 }
-                if (len <= 0) continue
-                txBytes.addAndGet(len.toLong())
-                val packet = buffer.copyOf(len)
-                try {
-                    handlePacket(packet)
-                } catch (_: Exception) {
-                }
+            } finally {
+                try { input.close() } catch (_: Exception) {}
             }
         } catch (_: Exception) {
-        } finally {
-            try { input.close() } catch (_: Exception) {}
         }
     }
 
@@ -487,7 +501,7 @@ class LocalProxyVpnService : VpnService() {
     }
 
     private fun connectSocket(conn: TcpConn) {
-        executor?.execute {
+        runOnExecutor {
             try {
                 val socket = Socket()
                 protect(socket)
@@ -577,7 +591,7 @@ class LocalProxyVpnService : VpnService() {
         packet[0] = 0x45
         packet[1] = 0
         put16(packet, 2, totalLen)
-        val id = (++packetId) and 0xFFFF
+        val id = packetId.incrementAndGet() and 0xFFFF
         put16(packet, 4, id)
         packet[6] = 0x40
         packet[7] = 0
@@ -717,7 +731,7 @@ class LocalProxyVpnService : VpnService() {
     }
 
     private fun startUdpSession(session: UdpSession) {
-        executor?.execute {
+        runOnExecutor {
             var socket: DatagramSocket? = null
             try {
                 socket = DatagramSocket()
@@ -762,7 +776,7 @@ class LocalProxyVpnService : VpnService() {
         packet[0] = 0x45
         packet[1] = 0
         put16(packet, 2, totalLen)
-        val id = (++packetId) and 0xFFFF
+        val id = packetId.incrementAndGet() and 0xFFFF
         put16(packet, 4, id)
         packet[6] = 0x40
         packet[7] = 0
@@ -785,18 +799,18 @@ class LocalProxyVpnService : VpnService() {
         if (dns.size < 12) return
         val name = parseQName(dns)
         if (name == null) {
-            executor?.execute { forwardDns(dns, srcIp, srcPort, null) }
+            runOnExecutor { forwardDns(dns, srcIp, srcPort, null) }
             return
         }
         if (Blocklist.isBlocked(name)) {
-            blockedCount++
+            blockedCount.incrementAndGet()
             if (loggedBlocked.size < 50 && loggedBlocked.add(name)) {
                 VpnLog.info("Bloqueado: $name")
             }
             val resp = buildNxDomain(dns)
             writeDnsPacket(srcIp, srcPort, resp)
         } else {
-            executor?.execute { forwardDns(dns, srcIp, srcPort, name) }
+            runOnExecutor { forwardDns(dns, srcIp, srcPort, name) }
         }
     }
 
@@ -843,13 +857,13 @@ class LocalProxyVpnService : VpnService() {
             val respPacket = DatagramPacket(buf, buf.size)
             socket.receive(respPacket)
             val resp = respPacket.data.copyOf(respPacket.length)
-            forwardedCount++
+            forwardedCount.incrementAndGet()
             if (name != null) mapDnsAnswers(resp, name)
             // Desenmascarar CNAME: si la respuesta es un alias (CNAME)
             // hacia un dominio bloqueado, se responde NXDOMAIN aunque
             // el nombre preguntado no esté en la lista.
             if (cnameBlocked(resp)) {
-                blockedCount++
+                blockedCount.incrementAndGet()
                 if (loggedBlocked.size < 50 && name != null && loggedBlocked.add(name)) {
                     VpnLog.info("Bloqueado (CNAME): $name")
                 }
@@ -975,7 +989,7 @@ class LocalProxyVpnService : VpnService() {
         packet[0] = 0x45
         packet[1] = 0
         put16(packet, 2, totalLen)
-        val id = (++packetId) and 0xFFFF
+        val id = packetId.incrementAndGet() and 0xFFFF
         put16(packet, 4, id)
         packet[6] = 0x40
         packet[7] = 0
@@ -1013,7 +1027,7 @@ class LocalProxyVpnService : VpnService() {
         running = false
         for ((_, c) in tcpConns) closeConn(c, sendRst = false)
         for ((_, s) in udpSessions) closeUdp(s)
-        VpnLog.info("Modo local apagado. Anuncios bloqueados en la sesión: $blockedCount")
+        VpnLog.info("Modo local apagado. Anuncios bloqueados en la sesión: ${blockedCount.get()}")
         try { tunOut?.close() } catch (_: Exception) {}
         tunOut = null
         try { iface?.close() } catch (_: Exception) {}
