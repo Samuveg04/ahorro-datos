@@ -194,8 +194,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateDetails() {
-        findViewById<TextView>(R.id.txtBlockedValue)?.text =
-            "${LocalProxyVpnService.blockedCount}"
+        try {
+            findViewById<TextView>(R.id.txtBlockedValue)?.text =
+                "${LocalProxyVpnService.blockedCount.get()}"
+        } catch (_: Exception) {
+        }
     }
 
     private val vpnPermissionLauncher = registerForActivityResult(
@@ -228,6 +231,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // Atrapador de cierres: si la app se cerró sola la vez anterior,
+        // la causa aparece en el registro al abrirla.
+        VpnLog.installCrashHandler(this)
+        VpnLog.loadLastCrash(this)?.let { trace ->
+            VpnLog.add("ERROR", "La vez anterior la app se cerró sola. Causa:\n$trace")
+        }
         if (!openLogged) {
             openLogged = true
             VpnLog.info("App abierta.")
