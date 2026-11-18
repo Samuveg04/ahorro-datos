@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ahorro VPN</string>
+    <string name="subtitle">Todo tu tráfico, más liviano</string>
+    <string name="connect">Conectar</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="connected">Protegido • Ahorrando</string>
+    <string name="disconnected">Desconectado</string>
+    <string name="data_used">Datos usados</string>
+    <string name="data_saved">Ahorrados hoy</string>
+    <string name="time_connected">Tiempo conectado</string>
+    <string name="server">Servidor</string>
+</resources>
