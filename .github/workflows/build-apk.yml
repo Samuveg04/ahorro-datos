@@ -1,5 +1,7 @@
 # Compila la APK en GitHub, sin Android Studio ni PC.
 # Usa Gradle directo, no necesita gradlew en el repo.
+# Sin setup-android: ubuntu-latest ya trae el SDK y setup-android@v3 falla
+# intentando instalar el paquete viejo 'tools' que Google quitó.
 name: Build APK
 on:
   push:
@@ -14,7 +16,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: android-actions/setup-android@v3
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleDebug
