@@ -41,7 +41,10 @@ class AhorroVpnService : Service() {
             }
             ACTION_STOP -> stopTunnel()
         }
-        return START_STICKY
+        // NOT_STICKY: si el sistema mata el servicio, que NO lo resucite
+        // solo con un intent nulo. Antes, con STICKY, se recreaba solo
+        // después de pararse por falta de config y eso enredaba el estado.
+        return START_NOT_STICKY
     }
 
     private fun createChannel() {
@@ -69,10 +72,11 @@ class AhorroVpnService : Service() {
             VpnLog.error("No se pudo arrancar el foreground", e)
         }
         VpnLog.info("Servicio iniciado. Buscando config WireGuard...")
-        val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-        val wgConfig = prefs.getString(KEY_WG_CONFIG, null)
-        if (wgConfig.isNullOrBlank()) {
-            VpnLog.error("Sin config WireGuard. Guarda tu wg_config en Ajustes antes de conectar.")
+        // La config es GLOBAL y viene compilada en el código (WgConfig),
+        // no de SharedPreferences ni de ningún campo. Lo pidió Sam.
+        val wgConfig = WgConfig.CONFIG.trim()
+        if (wgConfig.isBlank()) {
+            VpnLog.error("Sin config WireGuard global. La app no conecta hasta que se compile la config del servidor en WgConfig.")
             safeStopForeground()
             stopSelf()
             return
