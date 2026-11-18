@@ -313,8 +313,9 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- CONFIG WIREGUARD GLOBAL: viene compilada en WgConfig, no se pega.
-             Solo se muestra el estado. Lo pidió Sam 17 nov 2026 23:01. -->
+        <!-- CONFIG WIREGUARD: se importa el archivo .conf del servidor.
+             Cada amigo importa su propio archivo. Si no hay importada,
+             se usa la global compilada en WgConfig. Lo pidió Sam 18 nov 2026. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -335,16 +336,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Config global pendiente"
+                android:text="Sin config"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="La config viene dentro de la app, es la misma para todos. No hay que pegar nada."
+                android:text="Importa el archivo .conf del servidor. Cada amigo importa el suyo."
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnImportConfig"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_pill_button"
+                    android:text="IMPORTAR .CONF"
+                    android:textColor="#04120B"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearConfig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/bg_glass"
+                    android:text="Borrar"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="24dp" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- REGISTRO como terminal -->
