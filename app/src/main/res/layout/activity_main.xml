@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- REDISEÑO TOTAL v5 — "DIAL" — 18 nov 2026, pedido de Sam:
-     "toda la interfaz está horrible, no tiene una interfaz pro,
-     algo que en serio sea llamativo, un diseño de UI único".
-     No es un retoque de sombras: es otra interfaz.
-     Concepto: un dial central como un reloj / radar, halo esmeralda
-     arriba, botón ancho tipo píldora, panel de datos como tablero,
-     servidor como fila con avatar, registro como terminal. -->
+<!-- DISEÑO v6 — "CORE" — 18 nov 2026, pedido de Sam:
+     UNA sola app, UN solo botón: la config que sea (WireGuard o local),
+     la app la ejecuta igual. Y un panel bien pro, nada plano:
+     núcleo con anillo giratorio, gráfico de tráfico en vivo, tarjetas
+     cristal con borde, chip de modo, tipografía grande y registro terminal.
+     Concepto: el núcleo es el corazón de la app; cuando está activo,
+     el anillo gira y el gráfico se mueve. Todo se ve vivo. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:paddingTop="16dp"
         android:paddingBottom="24dp">
 
-        <!-- CABECERA: marca grande + píldora de estado -->
+        <!-- CABECERA: marca grande + chip de modo + píldora de estado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,6 +63,21 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtModeChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_pill_off"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:text="SIN CONFIG"
+                android:textColor="@color/lime"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/txtStatusPill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,57 +92,71 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- DIAL CENTRAL -->
+        <!-- NÚCLEO: anillo giratorio + dial central -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="24dp"
             android:gravity="center"
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/dialView"
-                android:layout_width="248dp"
-                android:layout_height="248dp"
-                android:background="@drawable/bg_dial_off">
+                android:layout_width="264dp"
+                android:layout_height="264dp"
+                android:gravity="center">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                <ImageView
+                    android:id="@+id/ringView"
+                    android:layout_width="264dp"
+                    android:layout_height="264dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_ring_sweep" />
 
-                    <TextView
-                        android:id="@+id/txtDialState"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="OFF"
-                        android:textColor="@color/text_primary"
-                        android:textSize="44sp"
-                        android:textStyle="bold" />
+                <FrameLayout
+                    android:id="@+id/dialView"
+                    android:layout_width="236dp"
+                    android:layout_height="236dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_dial_off">
 
-                    <TextView
-                        android:id="@+id/txtStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Desconectado"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp">
 
-                    <TextView
-                        android:id="@+id/txtDialIp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Tu IP está expuesta"
-                        android:textColor="@color/red"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/txtDialState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OFF"
+                            android:textColor="@color/text_primary"
+                            android:textSize="44sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Desconectado"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtDialIp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Tu IP está expuesta"
+                            android:textColor="@color/red"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </FrameLayout>
             </FrameLayout>
 
-            <!-- Botón ancho, no círculo: píldora con degradado esmeralda → lima -->
+            <!-- UN solo botón: conecta la config que sea (WireGuard o local) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnToggle"
                 android:layout_width="match_parent"
@@ -146,16 +175,103 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Todo tu tráfico pasa por el túnel. Nada por fuera."
+                android:text="Una app, cualquier config: WireGuard o local."
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- GRÁFICO DE TRÁFICO EN VIVO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_glass"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:letterSpacing="0.14"
+                    android:text="TRÁFICO EN VIVO"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="● BAJADA"
+                    android:textColor="@color/lime"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="● SUBIDA"
+                    android:textColor="@color/emerald"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.ahorro.vpn.TrafficGraphView
+                android:id="@+id/graphView"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Bajada ahora"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/txtRateDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 B/s"
+                    android:textColor="@color/lime"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Subida ahora"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/txtRateUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="0 B/s"
+                    android:textColor="@color/emerald"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- TABLERO DE DATOS: un solo panel cristal, 3 columnas con divisores -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/bg_glass"
             android:orientation="horizontal"
             android:paddingTop="18dp"
@@ -247,7 +363,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- SERVIDOR: fila con avatar CU + ping -->
+        <!-- MODO / SERVIDOR: fila con avatar CU + ping -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -277,7 +393,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.14"
-                    android:text="SERVIDOR"
+                    android:text="MODO"
                     android:textColor="@color/text_secondary"
                     android:textSize="10sp"
                     android:textStyle="bold" />
@@ -291,6 +407,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/txtServerSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -300,6 +417,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtPing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_pill_on"
@@ -313,9 +431,9 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- CONFIG WIREGUARD: se importa el archivo .conf del servidor.
-             Cada amigo importa su propio archivo. Si no hay importada,
-             se usa la global compilada en WgConfig. Lo pidió Sam 18 nov 2026. -->
+        <!-- CONFIG: un solo import, la app detecta el tipo.
+             WireGuard: archivo .conf del servidor.
+             Local: archivo de texto que empieza por [Local]. -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -327,7 +445,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.14"
-                android:text="CONFIG WIREGUARD"
+                android:text="CONFIG"
                 android:textColor="@color/text_secondary"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -343,9 +461,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Importa el archivo .conf del servidor. Cada amigo importa el suyo."
+                android:text="Importa un archivo .conf de WireGuard o una config local. La app detecta cuál es y trabaja con ella."
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
+            <TextView
+                android:id="@+id/txtLocalBlocked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Anuncios bloqueados: 0"
+                android:textColor="@color/lime"
+                android:textSize="13sp"
+                android:textStyle="bold" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -357,7 +484,7 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_pill_button"
-                    android:text="IMPORTAR .CONF"
+                    android:text="IMPORTAR CONFIG"
                     android:textColor="#04120B"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -437,7 +564,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Hecho para Cuba  •  Todo tu tráfico pasa por el túnel"
+            android:text="Hecho para Cuba  •  Una app, cualquier config"
             android:textColor="@color/text_muted"
             android:textSize="11sp" />
 
