@@ -1,43 +1,41 @@
 package com.ahorro.vpn
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
+import android.content.Context
 import android.content.Intent
-import android.net.VpnService
-import android.os.ParcelFileDescriptor
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import android.os.IBinder
+import androidx.core.app.NotificationCompat
 
 /**
- * El corazón de la app.
+ * Servicio en primer plano que maneja el túnel.
  *
- * Qué hace:
- * 1. Crea una interfaz TUN virtual con Builder().
- *    - address 10.8.0.2/24: IP de tu teléfono DENTRO del túnel.
- *    - addRoute 0.0.0.0/0: TODO el tráfico va al túnel, no solo web.
- *    - addDnsServer 10.8.0.1: DNS del servidor, que bloquea anuncios.
- *    - addDisallowedApplication: aquí puedes EXCLUIR apps si quieres,
- *      por ejemplo el banco. Si no pones nada, TODO pasa por el túnel.
- * 2. establish() devuelve un ParcelFileDescriptor: ahí entran y salen
- *    los paquetes IP de todas las apps.
- * 3. Un hilo lee paquetes del TUN y los manda al servidor por el
- *    túnel WireGuard. Otro hilo escribe las respuestas de vuelta al TUN.
+ * ANTES era un VpnService que creaba un TUN a mano con Builder().establish()
+ * y nunca llamaba a startForeground() ni a WireGuard: en Android 8+ lo
+ * mataba el sistema en segundos, y aunque no lo matara, el tráfico no
+ * salía a ningún lado porque el TUN no estaba conectado al servidor.
  *
- * IMPORTANTE: este esqueleto usa la librería WireGuard para el
- * cifrado y el transporte. No intentes mandar los paquetes IP
- * crudos por un socket UDP simple: TCP se rompe, DNS se rompe,
- * y la app se cae. WireGuard (wg-go) ya resuelve eso.
- *
- * En TunnelManager.kt va la conexión real con WireGuard.
- * Aquí solo está la creación del TUN, que es lo que Android te pide.
+ * AHORA:
+ * - Es un Service normal en primer plano (notificación obligatoria).
+ * - No crea el TUN a mano: lo crea GoBackend (su VpnService está en el Manifest).
+ * - Lee la config wg-quick de SharedPreferences ("wg_config"). Si no hay
+ *   config, NO finge estar conectado: lo registra en VpnLog y se detiene.
+ * - Todo queda en VpnLog.
  */
-class AhorroVpnService : VpnService() {
+class AhorroVpnService : Service() {
 
     companion object {
         const val ACTION_START = "com.ahorro.vpn.START"
         const val ACTION_STOP = "com.ahorro.vpn.STOP"
+        const val CHANNEL_ID = "ahorro_vpn_channel"
+        const val NOTIF_ID = 1
+        const val PREFS = "ahorro_vpn_prefs"
+        const val KEY_WG_CONFIG = "wg_config"
     }
 
-    private var tun: ParcelFileDescriptor? = null
-    private var running = false
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -47,47 +45,57 @@ class AhorroVpnService : VpnService() {
         return START_STICKY
     }
 
+    private fun createChannel() {
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channel = NotificationChannel(CHANNEL_ID, "Ahorro VPN", NotificationManager.IMPORTANCE_LOW)
+        channel.description = "Túnel VPN activo"
+        manager.createNotificationChannel(channel)
+    }
+
+    private fun notification(text: String): Notification {
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Ahorro VPN")
+            .setContentText(text)
+            .setSmallIcon(android.R.drawable.ic_lock_lock)
+            .setOngoing(true)
+            .build()
+    }
+
     private fun startTunnel() {
-        if (running) return
-        // Crea el TUN. Esto es lo que hace que TODO el tráfico
-        // del móvil pase por tu app.
-        val builder = Builder()
-            .addAddress("10.8.0.2", 24)
-            .addRoute("0.0.0.0", 0) // <-- TODO, no solo web
-            .addDnsServer("10.8.0.1") // DNS del servidor, con bloqueo
-            .setMtu(1280)
-            .setSession("Ahorro VPN Cuba")
-            // .addDisallowedApplication("com.android.bank") // si quieres excluir algo
-
-        tun = builder.establish()
-        running = true
-
-        // Aquí TunnelManager conecta WireGuard con el servidor:
-        // TunnelManager.connect(
-        //   tunFd = tun!!.fd,
-        //   privateKey = "TU_CLAVE_PRIVADA_DEL_TELEFONO",
-        //   serverPublicKey = "CLAVE_PUBLICA_DEL_SERVIDOR",
-        //   endpoint = "IP_DEL_SERVIDOR:51820"
-        // )
-        //
-        // WireGuard lee del TUN, cifra, manda por UDP al servidor,
-        // recibe la respuesta, descifra y escribe de vuelta al TUN.
-        // Android se encarga de entregar cada paquete a su app.
-
-        // Aviso en primer plano para que Android no mate el servicio.
-        // En producción usa startForeground con notificación.
+        createChannel()
+        startForeground(NOTIF_ID, notification("Conectando..."))
+        VpnLog.info("Servicio iniciado. Buscando config WireGuard...")
+        val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val wgConfig = prefs.getString(KEY_WG_CONFIG, null)
+        if (wgConfig.isNullOrBlank()) {
+            VpnLog.error("Sin config WireGuard. Guarda tu wg_config en Ajustes antes de conectar.")
+            stopForeground(true)
+            stopSelf()
+            return
+        }
+        TunnelManager.connect(this, wgConfig) { ok, msg ->
+            if (ok) {
+                VpnLog.info("VPN conectada: $msg")
+                val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                manager.notify(NOTIF_ID, notification("Protegido - Ahorrando"))
+            } else {
+                VpnLog.error("No se pudo conectar: $msg")
+                stopForeground(true)
+                stopSelf()
+            }
+        }
     }
 
     private fun stopTunnel() {
-        running = false
-        try { tun?.close() } catch (e: Exception) {}
-        tun = null
-        // TunnelManager.disconnect()
+        VpnLog.info("Desconectando VPN...")
+        TunnelManager.disconnect()
+        stopForeground(true)
         stopSelf()
     }
 
     override fun onDestroy() {
-        stopTunnel()
+        TunnelManager.disconnect()
+        VpnLog.saveToFile(this)
         super.onDestroy()
     }
 }
