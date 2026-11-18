@@ -26,7 +26,15 @@ import com.google.android.material.button.MaterialButton
  */
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        // "App abierta" se registra una sola vez por proceso.
+        // Antes se duplicaba porque onCreate se vuelve a llamar
+        // al volver del diálogo de permiso VPN.
+        private var openLogged = false
+    }
+
     private var vpnOn = false
+    private var serviceStarted = false
     private var startTimeMs: Long = 0L
 
     private val vpnPermissionLauncher = registerForActivityResult(
@@ -46,7 +54,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        VpnLog.info("App abierta.")
+        if (!openLogged) {
+            openLogged = true
+            VpnLog.info("App abierta.")
+        }
 
         val btn = findViewById<MaterialButton>(R.id.btnToggle)
         btn.setOnClickListener {
@@ -83,10 +94,17 @@ class MainActivity : AppCompatActivity() {
     private fun startVpn() {
         val intent = Intent(this, AhorroVpnService::class.java)
         intent.action = AhorroVpnService.ACTION_START
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
+            serviceStarted = true
+        } catch (e: Exception) {
+            VpnLog.error("No se pudo arrancar el servicio", e)
+            Toast.makeText(this, "No se pudo arrancar el servicio", Toast.LENGTH_SHORT).show()
+            return
         }
         vpnOn = true
         startTimeMs = System.currentTimeMillis()
@@ -95,12 +113,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun stopVpn() {
-        val intent = Intent(this, AhorroVpnService::class.java)
-        intent.action = AhorroVpnService.ACTION_STOP
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
+        // Si el servicio nunca arrancó (por ejemplo, falló por falta de
+        // config), NO le mandes un STOP: eso creaba una instancia nueva
+        // solo para pararla y tumbaba la app. Solo actualiza la UI.
+        if (serviceStarted) {
+            val intent = Intent(this, AhorroVpnService::class.java)
+            intent.action = AhorroVpnService.ACTION_STOP
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent)
+                } else {
+                    startService(intent)
+                }
+            } catch (e: Exception) {
+                VpnLog.error("No se pudo parar el servicio", e)
+            }
+            serviceStarted = false
         }
         vpnOn = false
         VpnLog.info("VPN apagada desde la app.")
