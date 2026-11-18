@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +34,53 @@ class MainActivity : AppCompatActivity() {
         // Antes se duplicaba porque onCreate se vuelve a llamar
         // al volver del diálogo de permiso VPN.
         private var openLogged = false
+        private const val PREFS = "ahorro_vpn_prefs"
+        private const val KEY_WG_CONFIG = "wg_config"
+    }
+
+    // Config: primero la importada por el usuario (archivo .conf),
+    // si no hay, la global compilada en WgConfig. Lo pidió Sam 18 nov:
+    // la app es solo para sus amigos, no comercial, y cada uno importa
+    // su propio archivo de config.
+    private val prefs by lazy { getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
+
+    private fun getEffectiveConfig(): String {
+        val imported = prefs.getString(KEY_WG_CONFIG, "")?.trim().orEmpty()
+        if (imported.isNotBlank()) return imported
+        return WgConfig.CONFIG.trim()
+    }
+
+    private fun updateConfigStatus() {
+        val imported = prefs.getString(KEY_WG_CONFIG, "")?.trim().orEmpty()
+        findViewById<TextView>(R.id.txtConfigStatus)?.text = when {
+            imported.isNotBlank() -> "Config importada ✓ (archivo .conf)"
+            WgConfig.CONFIG.trim().isNotBlank() -> "Config global incluida ✓"
+            else -> "Sin config — importa el archivo .conf del servidor"
+        }
+    }
+
+    private val importConfigLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri == null) {
+            VpnLog.info("Importar config cancelado.")
+            return@registerForActivityResult
+        }
+        try {
+            val text = contentResolver.openInputStream(uri)?.bufferedReader().use { it?.readText() }?.trim().orEmpty()
+            if (!text.contains("[Interface]") || !text.contains("[Peer]")) {
+                VpnLog.error("Archivo importado no es una config WireGuard válida.")
+                Toast.makeText(this, "Ese archivo no es una config WireGuard válida", Toast.LENGTH_LONG).show()
+                return@registerForActivityResult
+            }
+            prefs.edit().putString(KEY_WG_CONFIG, text).apply()
+            VpnLog.info("Config WireGuard importada desde archivo.")
+            Toast.makeText(this, "Config importada ✓", Toast.LENGTH_SHORT).show()
+            updateConfigStatus()
+        } catch (e: Exception) {
+            VpnLog.error("No se pudo leer el archivo de config", e)
+            Toast.makeText(this, "No se pudo leer ese archivo", Toast.LENGTH_LONG).show()
+        }
     }
 
     private var vpnOn = false
@@ -95,11 +143,11 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener {
             if (!vpnOn) {
                 VpnLog.info("Botón Conectar tocado.")
-                // Sin config global no se conecta ni se finge conectado.
-                // Lo pidió Sam: si no hay config, no debería ni conectar.
-                if (WgConfig.CONFIG.trim().isBlank()) {
-                    VpnLog.error("Sin config WireGuard global. No se conecta.")
-                    Toast.makeText(this, "Sin config: la app todavía no trae la config del servidor", Toast.LENGTH_LONG).show()
+                // Sin config (ni importada ni global) no se conecta
+                // ni se finge conectado. Lo pidió Sam.
+                if (getEffectiveConfig().isBlank()) {
+                    VpnLog.error("Sin config WireGuard. Importa el archivo .conf del servidor.")
+                    Toast.makeText(this, "Sin config: importa el archivo .conf del servidor", Toast.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
                 val intent = VpnService.prepare(this)
@@ -121,11 +169,19 @@ class MainActivity : AppCompatActivity() {
             VpnLog.info("Log copiado al portapapeles.")
         }
 
-        // Config GLOBAL: viene compilada en WgConfig, no se pega en la app.
-        // Aquí solo se muestra si está incluida o pendiente.
-        findViewById<TextView>(R.id.txtConfigStatus)?.text =
-            if (WgConfig.CONFIG.trim().isBlank()) "Config global pendiente — todavía no trae la del servidor"
-            else "Config global incluida ✓"
+        // Config: importada por archivo o global compilada.
+        // Solo se muestra el estado; el archivo se importa con el botón.
+        updateConfigStatus()
+        findViewById<MaterialButton>(R.id.btnImportConfig)?.setOnClickListener {
+            VpnLog.info("Importar config tocado.")
+            importConfigLauncher.launch("*/*")
+        }
+        findViewById<MaterialButton>(R.id.btnClearConfig)?.setOnClickListener {
+            prefs.edit().remove(KEY_WG_CONFIG).apply()
+            VpnLog.info("Config importada borrada.")
+            Toast.makeText(this, "Config borrada", Toast.LENGTH_SHORT).show()
+            updateConfigStatus()
+        }
 
         VpnLog.addListener(logListener)
         updateUi()
