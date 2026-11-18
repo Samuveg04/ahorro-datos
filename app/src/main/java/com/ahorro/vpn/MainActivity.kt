@@ -82,6 +82,42 @@ class MainActivity : AppCompatActivity() {
             VpnLog.info("Log copiado al portapapeles.")
         }
 
+        // Config WireGuard: se pega el texto de sam.conf y se guarda en
+        // SharedPreferences "ahorro_vpn_prefs", clave "wg_config".
+        // El servicio la lee de ahí al conectar. Sin ella, no conecta.
+        val edtConfig = findViewById<android.widget.EditText>(R.id.edtConfig)
+        val btnSave = findViewById<MaterialButton>(R.id.btnSaveConfig)
+        val btnClear = findViewById<MaterialButton>(R.id.btnClearConfig)
+        val prefs = getSharedPreferences(AhorroVpnService.PREFS, Context.MODE_PRIVATE)
+        val saved = prefs.getString(AhorroVpnService.KEY_WG_CONFIG, null)
+        if (!saved.isNullOrBlank()) {
+            edtConfig.setText(saved)
+            findViewById<TextView>(R.id.txtConfigStatus).text = "Config guardada ✓"
+        }
+        btnSave.setOnClickListener {
+            val text = edtConfig.text.toString().trim()
+            if (text.isBlank()) {
+                Toast.makeText(this, "Pega primero el texto de sam.conf", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!text.contains("[Interface]") || !text.contains("[Peer]")) {
+                Toast.makeText(this, "Ese texto no parece una config WireGuard", Toast.LENGTH_LONG).show()
+                VpnLog.warn("Config rechazada: no tiene [Interface] ni [Peer].")
+                return@setOnClickListener
+            }
+            prefs.edit().putString(AhorroVpnService.KEY_WG_CONFIG, text).apply()
+            findViewById<TextView>(R.id.txtConfigStatus).text = "Config guardada ✓"
+            Toast.makeText(this, "Config guardada", Toast.LENGTH_SHORT).show()
+            VpnLog.info("Config WireGuard guardada.")
+        }
+        btnClear.setOnClickListener {
+            prefs.edit().remove(AhorroVpnService.KEY_WG_CONFIG).apply()
+            edtConfig.setText("")
+            findViewById<TextView>(R.id.txtConfigStatus).text = "Sin config guardada"
+            Toast.makeText(this, "Config borrada", Toast.LENGTH_SHORT).show()
+            VpnLog.info("Config WireGuard borrada.")
+        }
+
         VpnLog.addListener(logListener)
         updateUi()
     }
