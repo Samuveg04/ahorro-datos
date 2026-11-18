@@ -12,4 +12,8 @@
     <string name="server">Servidor</string>
     <string name="log_title">Registro</string>
     <string name="log_hint">Toca el registro para copiarlo</string>
+    <string name="config_title">Config WireGuard</string>
+    <string name="config_hint">Pega aquí el texto completo de sam.conf</string>
+    <string name="config_save">Guardar config</string>
+    <string name="config_clear">Borrar</string>
 </resources>
