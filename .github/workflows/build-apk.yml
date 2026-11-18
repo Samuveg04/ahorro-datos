@@ -1,7 +1,11 @@
 # Compila la APK en GitHub, sin Android Studio ni PC.
-# Usa Gradle directo, no necesita gradlew en el repo.
-# Sin setup-android: ubuntu-latest ya trae el SDK y setup-android@v3 falla
-# intentando instalar el paquete viejo 'tools' que Google quitó.
+# Actualizado 18 nov 2026:
+# - android-actions/setup-android@v3 -> v4: v3 pedía el paquete 'tools'
+#   que Google quitó del SDK y fallaba con "Failed to find package 'tools'".
+#   v4 ya no pide 'tools'.
+# - gradle/gradle-build-action@v2 (obsoleto) -> gradle/actions/setup-gradle@v4
+# - Gradle 8.7 (lo exige AGP 8.5.2) + Java 17.
+# - No hay gradlew en el repo: se fija gradle-version: 8.7.
 name: Build APK
 on:
   push:
@@ -16,9 +20,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: gradle/gradle-build-action@v2
+      - uses: android-actions/setup-android@v4
+      - uses: gradle/actions/setup-gradle@v4
         with:
-          arguments: assembleDebug
+          gradle-version: 8.7
+      - run: gradle assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: ahorro-vpn-apk
