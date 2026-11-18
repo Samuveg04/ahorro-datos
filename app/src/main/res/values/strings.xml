@@ -10,4 +10,6 @@
     <string name="data_saved">Ahorrados hoy</string>
     <string name="time_connected">Tiempo conectado</string>
     <string name="server">Servidor</string>
+    <string name="log_title">Registro</string>
+    <string name="log_hint">Toca el registro para copiarlo</string>
 </resources>
