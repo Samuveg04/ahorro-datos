@@ -249,20 +249,19 @@ class LocalProxyVpnService : VpnService() {
         }
         iface = vpnInterface
         tunOut = FileOutputStream(vpnInterface.fileDescriptor)
-        // Pool TCP/UDP con COLA: antes era SynchronousQueue (sin cola) y
-        // con 32 hilos: las conexiones largas ocupaban todos los hilos y
-        // cada conexión nueva y cada consulta DNS se rechazaban al momento
-        // (RST / sin respuesta) — por eso WhatsApp no conectaba, Chrome
-        // cancelaba una pila de cosas y YouTube iba lento. Con cola, la
-        // conexión espera su turno en vez de morir, y el DNS tiene su
-        // propio pool para no quedarse nunca sin hilo.
+        // Pool TCP/UDP con COLA. OJO, lección aprendida en #95: con cola,
+        // el pool solo crece hasta el MÍNIMO (core). Con core 8 y max 64,
+        // se quedaba en 8 hilos y todo lo demás esperaba en la cola para
+        // siempre — por eso con #95 ya nadie hacía nada. Con core == max,
+        // los 64 hilos se crean según llegan las tareas y la cola solo
+        // recoge el desborde; el DNS tiene su propio pool igual.
         executor = ThreadPoolExecutor(
-            8, 64,
+            64, 64,
             30L, TimeUnit.SECONDS,
             LinkedBlockingQueue<Runnable>(512)
         )
         dnsExecutor = ThreadPoolExecutor(
-            2, 16,
+            16, 16,
             60L, TimeUnit.SECONDS,
             LinkedBlockingQueue<Runnable>(256)
         )
