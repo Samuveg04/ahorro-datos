@@ -1,1 +1,57 @@
-cGFja2FnZSBjb20uYWhvcnJvLnZwbgoKLyoqCiAqIExpc3RhIGRlIGRvbWluaW9zIGRlIGFudW5jaW9zLCByYXN0cmVhZG9yZXMgeSBhbmFsw610aWNhLgogKiBBaG9yYSBlcyBHUkFOREUgKH43LjAwMCBkb21pbmlvcyk6IGxhIGxpc3RhIGN1cmFkYSBkZSBhbnRlcwogKiAofjEyMCkgKyB1bmEgc2VsZWNjacOzbiBkZSBsYSBsaXN0YSB1bmlmaWNhZGEgZGUgU3RldmVuQmxhY2sKICogKGhvc3RzLCBkb21pbmlvIHDDumJsaWNvLCBtaWxsb25lcyBkZSB1c3VhcmlvcykgKyBsb3MKICogZG9taW5pb3MgZGUgRE5TIHNlZ3VybyAoRG9IKSBwYXJhIHF1ZSBDaHJvbWUgeSBsYXMgYXBwcyBubwogKiBzZSBzYWx0ZW4gZWwgRE5TIGRlIGxhIFZQTi4KICoKICogU29sbyBkb21pbmlvcyBxdWUgc29uIFBVUk8gYW51bmNpby9yYXN0cmVvOiBudW5jYSBDRE5zIGRlCiAqIHbDrWRlbyAoZ29vZ2xldmlkZW8sIGZiY2RuLCB0aWt0b2tjZG4uLi4pLCBuaSBBUElzIHF1ZSB1c2FuCiAqIGxhcyBhcHBzIChncmFwaC5mYWNlYm9vay5jb20gTk8gZXN0w6EgYXF1w606IGJsb3F1ZWFybG8KICogcm9tcGVyw61hIEZhY2Vib29rIGUgSW5zdGFncmFtKS4gTG9zIHN1YmRvbWluaW9zIGRlCiAqIGFudW5jaW9zIChhZHMueW91dHViZS5jb20sIHBpeGVsLmZhY2Vib29rLmNvbS4uLikgU8ONIGVzdMOhbjoKICogc29uIHJhc3RyZW8sIG5vIGNvbnRlbmlkbywgeSBibG9xdWVhcmxvcyBubyByb21wZSBsYSBhcHAuCiAqCiAqIExhIGNvbXBhcmFjacOzbiBlcyBwb3Igc3VmaWpvOiAiZG91YmxlY2xpY2submV0IiBibG9xdWVhCiAqIHRhbWJpw6luICJ3d3cuZG91YmxlY2xpY2submV0IiB5ICJzdGF0cy5kb3VibGVjbGljay5uZXQiLgogKiBMYSBiw7pzcXVlZGEgY2FtaW5hIHBvciBsYXMgZXRpcXVldGFzICgiYS5iLmMuY29tIiAtPgogKiAiYi5jLmNvbSIgLT4gImMuY29tIikgZW4gdW4gSGFzaFNldCwgYXPDrSBxdWUgZXMgcsOhcGlkYQogKiBhdW5xdWUgbGEgbGlzdGEgdGVuZ2EgbWlsZXMgZGUgZW50cmFkYXMuCiAqCiAqIExvcyBkb21pbmlvcyB2aXZlbiBlbiBCbG9ja2xpc3REYXRhMS5rdCB5IEJsb2NrbGlzdERhdGEyLmt0CiAqIChsYSBsaXN0YSBwYXJ0aWRhIGVuIGRvcyBwYXJhIHF1ZSBjYWRhIGFyY2hpdm8gc2VhIG1hbmVqYWJsZSkuCiAqCiAqIEzDjU1JVEUgSE9ORVNUTzogZXN0byBibG9xdWVhIGxvIHF1ZSBsbGVnYSBwb3IgRE5TLiBMb3MKICogYW51bmNpb3MgcXVlIGVsIHByb3BpbyBzaXRpbyBzaXJ2ZSBkZXNkZSBzdSBkb21pbmlvIHkgbGFzCiAqIHJlZGlyZWNjaW9uZXMgcXVlIGhhY2Ugc3UgSmF2YVNjcmlwdCBubyBzZSBwdWVkZW4gcGFyYXIKICogcG9yIEROUzogcGFyYSBlc28gaGFjZSBmYWx0YSB1biBibG9xdWVhZG9yIGRlIGNvbnRlbmlkbwogKiBlbiBlbCBuYXZlZ2Fkb3IgKEZpcmVmb3ggKyB1QmxvY2sgT3JpZ2luKS4KICovCm9iamVjdCBCbG9ja2xpc3QgewogICAgcHJpdmF0ZSB2YWwgRE9NQUlOUzogU2V0PFN0cmluZz4gPQogICAgICAgIEJsb2NrbGlzdERhdGExLkRPTUFJTlMgKyBCbG9ja2xpc3REYXRhMi5ET01BSU5TCgogICAgZnVuIGlzQmxvY2tlZChob3N0OiBTdHJpbmcpOiBCb29sZWFuIHsKICAgICAgICB2YXIgaCA9IGhvc3QubG93ZXJjYXNlKCkudHJpbSgpLnRyaW1FbmQoJy4nKQogICAgICAgIGlmIChoLmlzRW1wdHkoKSkgcmV0dXJuIGZhbHNlCiAgICAgICAgLy8gQ2FtaW5hIHBvciBsYXMgZXRpcXVldGFzOiBhLmIuYy5jb20gLT4gYi5jLmNvbSAtPiBjLmNvbS4KICAgICAgICB3aGlsZSAodHJ1ZSkgewogICAgICAgICAgICBpZiAoRE9NQUlOUy5jb250YWlucyhoKSB8fCBleHRyYS5jb250YWlucyhoKSkgcmV0dXJuIHRydWUKICAgICAgICAgICAgdmFsIGRvdCA9IGguaW5kZXhPZignLicpCiAgICAgICAgICAgIGlmIChkb3QgPCAwKSBicmVhawogICAgICAgICAgICBoID0gaC5zdWJzdHJpbmcoZG90ICsgMSkKICAgICAgICB9CiAgICAgICAgcmV0dXJuIGZhbHNlCiAgICB9CgogICAgLyoqIERvbWluaW9zIGV4dHJhIHF1ZSB0cmFlIGxhIGNvbmZpZyBsb2NhbCBkZWwgdXN1YXJpby4gKi8KICAgIGZ1biBzZXRFeHRyYShkb21haW5zOiBTZXQ8U3RyaW5nPikgewogICAgICAgIGV4dHJhLmNsZWFyKCkKICAgICAgICBleHRyYS5hZGRBbGwoZG9tYWlucy5tYXAgeyBpdC5sb3dlcmNhc2UoKS50cmltKCkudHJpbUVuZCgnLicpIH0uZmlsdGVyIHsgaXQuaXNOb3RCbGFuaygpIH0pCiAgICB9CgogICAgcHJpdmF0ZSB2YWwgZXh0cmEgPSBtdXRhYmxlU2V0T2Y8U3RyaW5nPigpCn0K
+package com.ahorro.vpn
+
+/**
+ * Lista de dominios de anuncios, rastreadores y analítica.
+ * Ahora es GRANDE (~7.000 dominios): la lista curada de antes
+ * (~120) + una selección de la lista unificada de StevenBlack
+ * (hosts, dominio público, millones de usuarios) + los
+ * dominios de DNS seguro (DoH) para que Chrome y las apps no
+ * se salten el DNS de la VPN.
+ *
+ * Solo dominios que son PURO anuncio/rastreo: nunca CDNs de
+ * vídeo (googlevideo, fbcdn, tiktokcdn...), ni APIs que usan
+ * las apps (graph.facebook.com NO está aquí: bloquearlo
+ * rompería Facebook e Instagram). Los subdominios de
+ * anuncios (ads.youtube.com, pixel.facebook.com...) SÍ están:
+ * son rastreo, no contenido, y bloquearlos no rompe la app.
+ *
+ * La comparación es por sufijo: "doubleclick.net" bloquea
+ * también "www.doubleclick.net" y "stats.doubleclick.net".
+ * La búsqueda camina por las etiquetas ("a.b.c.com" ->
+ * "b.c.com" -> "c.com") en un HashSet, así que es rápida
+ * aunque la lista tenga miles de entradas.
+ *
+ * Los dominios viven en BlocklistData1.kt y BlocklistData2.kt
+ * (la lista partida en dos para que cada archivo sea manejable).
+ *
+ * LÍMITE HONESTO: esto bloquea lo que llega por DNS. Los
+ * anuncios que el propio sitio sirve desde su dominio y las
+ * redirecciones que hace su JavaScript no se pueden parar
+ * por DNS: para eso hace falta un bloqueador de contenido
+ * en el navegador (Firefox + uBlock Origin).
+ */
+object Blocklist {
+    private val DOMAINS: Set<String> =
+        BlocklistData1.DOMAINS + BlocklistData2.DOMAINS
+
+    fun isBlocked(host: String): Boolean {
+        var h = host.lowercase().trim().trimEnd('.')
+        if (h.isEmpty()) return false
+        // Camina por las etiquetas: a.b.c.com -> b.c.com -> c.com.
+        while (true) {
+            if (DOMAINS.contains(h) || extra.contains(h)) return true
+            val dot = h.indexOf('.')
+            if (dot < 0) break
+            h = h.substring(dot + 1)
+        }
+        return false
+    }
+
+    /** Dominios extra que trae la config local del usuario. */
+    fun setExtra(domains: Set<String>) {
+        extra.clear()
+        extra.addAll(domains.map { it.lowercase().trim().trimEnd('.') }.filter { it.isNotBlank() })
+    }
+
+    private val extra = mutableSetOf<String>()
+}
