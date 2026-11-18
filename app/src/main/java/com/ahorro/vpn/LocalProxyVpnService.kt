@@ -510,7 +510,7 @@ class LocalProxyVpnService : VpnService() {
                 synchronized(conn) {
                     if (conn.closed) {
                         try { socket.close() } catch (_: Exception) {}
-                        return@execute
+                        return@runOnExecutor
                     }
                     conn.socket = socket
                     conn.socketOut = socket.getOutputStream()
@@ -523,7 +523,7 @@ class LocalProxyVpnService : VpnService() {
                             conn.socketOut?.write(data)
                         } catch (_: Exception) {
                             closeConn(conn, sendRst = true)
-                            return@execute
+                            return@runOnExecutor
                         }
                     }
                     try { conn.socketOut?.flush() } catch (_: Exception) {}
