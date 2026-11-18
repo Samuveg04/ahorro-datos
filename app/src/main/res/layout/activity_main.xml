@@ -228,6 +228,70 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Config WireGuard - lo pidió Sam 17 nov 22:39: no había dónde pegarla.
+             Aquí se pega el texto completo del archivo sam.conf que genera el servidor. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Config WireGuard"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/txtConfigStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Sin config guardada"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp" />
+            <EditText
+                android:id="@+id/edtConfig"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_input"
+                android:gravity="top"
+                android:hint="Pega aquí el texto completo de sam.conf"
+                android:inputType="textMultiLine"
+                android:padding="12dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_muted"
+                android:textSize="11sp"
+                android:typeface="monospace" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveConfig"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="Guardar config"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/emerald"
+                    app:cornerRadius="12dp" />
+                <View android:layout_width="12dp" android:layout_height="1dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearConfig"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="Borrar"
+                    android:textColor="@color/text_primary"
+                    app:backgroundTint="@color/card"
+                    app:cornerRadius="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
         <!-- Registro / Log - lo pidió Sam: la app TIENE que tener un log -->
         <LinearLayout
             android:layout_width="match_parent"
