@@ -12,20 +12,10 @@ import kotlinx.coroutines.launch
 
 /**
  * TunnelManager — conecta el túnel con el servidor WireGuard.
- *
- * ANTES era un esqueleto vacío: connect() no hacía nada, así que la app
- * mostraba "Conectado" pero ningún paquete salía al servidor.
- *
- * AHORA usa la librería oficial (GoBackend):
- *   - Config.parse() lee la config wg-quick (la misma que genera crear-cliente.sh).
- *   - backend.setState(tunnel, UP, config) levanta el túnel. GoBackend usa
- *     su propio VpnService (declarado en AndroidManifest) para crear el TUN.
- *   - AllowedIPs 0.0.0.0/0, ::/0 = TODO el tráfico pasa por el túnel.
- *   - Todo queda en VpnLog, para verlo en la pantalla de la app.
- *
- * Las claves NO van pegadas en el código: llegan como texto wg-quick
- * desde el servidor / SharedPreferences. Si no hay config, no se conecta
- * y se registra el error en el log, en vez de dejar el teléfono sin internet.
+ * Corregido 18 nov 2026 — crash al desconectar:
+ * - disconnect() llamaba a setState(DOWN, lastConfig) con lastConfig null
+ *   o con un backend que nunca se levantó. Ahora todo va con guardas
+ *   y runCatching: si no hay nada que bajar, simplemente no hace nada.
  */
 class WireGuardTunnel(private val name: String) : Tunnel {
     private var state: Tunnel.State = Tunnel.State.DOWN
@@ -78,17 +68,23 @@ object TunnelManager {
     }
 
     fun disconnect() {
+        val b = backend
+        val t = tunnel
+        if (b == null || t == null) {
+            VpnLog.info("No hay túnel que bajar.")
+            return
+        }
+        if (t.getState() == Tunnel.State.DOWN) {
+            VpnLog.info("Túnel ya estaba bajado.")
+            return
+        }
         scope.launch {
-            try {
-                val b = backend
-                val t = tunnel
-                if (b != null && t != null) {
-                    VpnLog.info("Bajando túnel WireGuard...")
-                    b.setState(t, Tunnel.State.DOWN, lastConfig)
-                    VpnLog.info("Túnel bajado.")
-                }
-            } catch (e: Exception) {
-                VpnLog.error("Fallo al bajar el túnel", e)
+            runCatching {
+                VpnLog.info("Bajando túnel WireGuard...")
+                b.setState(t, Tunnel.State.DOWN, lastConfig)
+                VpnLog.info("Túnel bajado.")
+            }.onFailure { e ->
+                VpnLog.error("Fallo al bajar el túnel", e as? Exception ?: Exception(e.message))
             }
         }
     }
