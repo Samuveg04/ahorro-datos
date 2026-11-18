@@ -72,11 +72,14 @@ class AhorroVpnService : Service() {
             VpnLog.error("No se pudo arrancar el foreground", e)
         }
         VpnLog.info("Servicio iniciado. Buscando config WireGuard...")
-        // La config es GLOBAL y viene compilada en el código (WgConfig),
-        // no de SharedPreferences ni de ningún campo. Lo pidió Sam.
-        val wgConfig = WgConfig.CONFIG.trim()
+        // La config es la importada por archivo (SharedPreferences) y,
+        // si no hay, la GLOBAL compilada en el código (WgConfig).
+        // Lo pidió Sam 18 nov: cada amigo importa su propio .conf.
+        val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val imported = prefs.getString(KEY_WG_CONFIG, "")?.trim().orEmpty()
+        val wgConfig = if (imported.isNotBlank()) imported else WgConfig.CONFIG.trim()
         if (wgConfig.isBlank()) {
-            VpnLog.error("Sin config WireGuard global. La app no conecta hasta que se compile la config del servidor en WgConfig.")
+            VpnLog.error("Sin config WireGuard. Importa el archivo .conf del servidor.")
             safeStopForeground()
             stopSelf()
             return
