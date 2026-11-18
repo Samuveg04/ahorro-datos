@@ -1,1 +1,525 @@
-cGFja2FnZSBjb20uYWhvcnJvLnZwbgoKaW1wb3J0IGFuZHJvaWQuYXBwLkFjdGl2aXR5CmltcG9ydCBhbmRyb2lkLmNvbnRlbnQuQ2xpcERhdGEKaW1wb3J0IGFuZHJvaWQuY29udGVudC5DbGlwYm9hcmRNYW5hZ2VyCmltcG9ydCBhbmRyb2lkLmNvbnRlbnQuQ29udGV4dAppbXBvcnQgYW5kcm9pZC5jb250ZW50LkludGVudAppbXBvcnQgYW5kcm9pZC5uZXQuVXJpCmltcG9ydCBhbmRyb2lkLm5ldC5WcG5TZXJ2aWNlCmltcG9ydCBhbmRyb2lkLm9zLkJ1aWxkCmltcG9ydCBhbmRyb2lkLm9zLkJ1bmRsZQppbXBvcnQgYW5kcm9pZC5vcy5IYW5kbGVyCmltcG9ydCBhbmRyb2lkLm9zLkxvb3BlcgppbXBvcnQgYW5kcm9pZC52aWV3Lk1vdGlvbkV2ZW50CmltcG9ydCBhbmRyb2lkLnZpZXcuVmlldwppbXBvcnQgYW5kcm9pZC53aWRnZXQuRnJhbWVMYXlvdXQKaW1wb3J0IGFuZHJvaWQud2lkZ2V0LkltYWdlVmlldwppbXBvcnQgYW5kcm9pZC53aWRnZXQuU2Nyb2xsVmlldwppbXBvcnQgYW5kcm9pZC53aWRnZXQuVGV4dFZpZXcKaW1wb3J0IGFuZHJvaWQud2lkZ2V0LlRvYXN0CmltcG9ydCBhbmRyb2lkeC5hY3Rpdml0eS5yZXN1bHQuY29udHJhY3QuQWN0aXZpdHlSZXN1bHRDb250cmFjdHMKaW1wb3J0IGFuZHJvaWR4LmFwcGNvbXBhdC5hcHAuQXBwQ29tcGF0QWN0aXZpdHkKaW1wb3J0IGNvbS5nb29nbGUuYW5kcm9pZC5tYXRlcmlhbC5idXR0b24uTWF0ZXJpYWxCdXR0b24KCi8qKgogKiBVTkEgc29sYSBhcHAsIFVOIHNvbG8gaW50ZXJydXB0b3IsIGxhIGNvbmZpZyBxdWUgc2VhLgogKiBMbyBwaWRpw7MgU2FtIDE4IG5vdiAyMDI2OiBsbyBtaXNtbyB1biBhcmNoaXZvIGNvbmZpZyBsb2NhbCBxdWUKICogdW4gYXJjaGl2byBjb25maWcgZGUgV2lyZUd1YXJkLCBsYSBhcHAgbG9zIGVqZWN1dGEgaWd1YWwuCiAqIC0gU2kgbGEgY29uZmlnIHRyYWUgW0ludGVyZmFjZV0gKyBbUGVlcl0gLT4gV2lyZUd1YXJkICh0w7puZWwgYWwgc2Vydmlkb3IpLgogKiAtIFNpIHRyYWUgW0xvY2FsXSAtPiBtb2RvIGxvY2FsIChwcm94eSBsb2NhbDogdG9kbyBlbCB0csOhZmljbyBwYXNhCiAqICAgcG9yIGxhIGFwcCwgYmxvcXVlbyBETlMgeSBmcmVubyBkZSB2w61kZW8gYSAwLDUgTWJwcywgc2luIHNlcnZpZG9yKS4KICogTGEgYXBwIGRldGVjdGEgY3XDoWwgZXMgYWwgaW1wb3J0YXIgeSBlbCBpbnRlcnJ1cHRvciBhcnJhbmNhIGVzZSBtb2RvLgogKiAtIExhIGNvbmZpZyBwdWVkZSB2ZW5pciBjaWZyYWRhICguYWhvcnJvKTogc2UgZGVzY2lmcmEgYWwgaW1wb3J0YXIuCiAqCiAqIERpc2XDsW8gdjcgIkNPTlNPTEEiICgxOCBub3YgMjAyNiwgcGVkaWRvIGRlIFNhbTogaW50ZXJmYXogbnVldmEKICogZGUgcGFxdWV0ZSwgbmFkYSBkZSByZXRvcXVlIGRlbCB2NiwgbmFkYSBkZSBhc3BlY3RvIGRlIElBKToKICogdGFyamV0YXMgc8OzbGlkYXMgY29uIGJvcmRlIGZpbm8sIHVuIHNvbG8gYWNlbnRvIGVzbWVyYWxkYSwgdG9kbwogKiBzaW3DqXRyaWNvIHkgY2VudHJhZG8sIGludGVycnVwdG9yIHJlYWwgY29uIHBlcmlsbGEgcXVlIHNlIGRlc2xpemEsCiAqIHJlZ2lzdHJvIGNvbiBzY3JvbGwgZGUgdmVyZGFkIHkgZGV0YWxsZXMgZGUgY29uZXhpw7NuIGRlIFZQTiBwcm8uCiAqLwpjbGFzcyBNYWluQWN0aXZpdHkgOiBBcHBDb21wYXRBY3Rpdml0eSgpIHsKCiAgICBjb21wYW5pb24gb2JqZWN0IHsKICAgICAgICAvLyAiQXBwIGFiaWVydGEiIHNlIHJlZ2lzdHJhIHVuYSBzb2xhIHZleiBwb3IgcHJvY2Vzby4KICAgICAgICAvLyBBbnRlcyBzZSBkdXBsaWNhYmEgcG9ycXVlIG9uQ3JlYXRlIHNlIHZ1ZWx2ZSBhIGxsYW1hcgogICAgICAgIC8vIGFsIHZvbHZlciBkZWwgZGnDoWxvZ28gZGUgcGVybWlzbyBWUE4uCiAgICAgICAgcHJpdmF0ZSB2YXIgb3BlbkxvZ2dlZCA9IGZhbHNlCiAgICAgICAgcHJpdmF0ZSBjb25zdCB2YWwgUFJFRlMgPSAiYWhvcnJvX3Zwbl9wcmVmcyIKICAgICAgICBwcml2YXRlIGNvbnN0IHZhbCBLRVlfV0dfQ09ORklHID0gIndnX2NvbmZpZyIKICAgICAgICBwcml2YXRlIGNvbnN0IHZhbCBLRVlfTE9DQUxfQ09ORklHID0gImxvY2FsX2NvbmZpZyIKICAgICAgICBwcml2YXRlIGNvbnN0IHZhbCBLRVlfQ09ORklHX1RZUEUgPSAiY29uZmlnX3R5cGUiCiAgICAgICAgcHJpdmF0ZSBjb25zdCB2YWwgVFlQRV9XSVJFR1VBUkQgPSAid2lyZWd1YXJkIgogICAgICAgIHByaXZhdGUgY29uc3QgdmFsIFRZUEVfTE9DQUwgPSAibG9jYWwiCiAgICB9CgogICAgcHJpdmF0ZSB2YWwgcHJlZnMgYnkgbGF6eSB7IGdldFNoYXJlZFByZWZlcmVuY2VzKFBSRUZTLCBDb250ZXh0Lk1PREVfUFJJVkFURSkgfQoKICAgIC8qKiBEZXRlY3RhIGVsIHRpcG8gZGUgY29uZmlnIHBvciBzdSBjb250ZW5pZG8uIE51bGwgc2kgbm8gZXMgdsOhbGlkYS4gKi8KICAgIHByaXZhdGUgZnVuIGRldGVjdENvbmZpZ1R5cGUodGV4dDogU3RyaW5nKTogU3RyaW5nPyB7CiAgICAgICAgcmV0dXJuIHdoZW4gewogICAgICAgICAgICB0ZXh0LmNvbnRhaW5zKCJbTG9jYWxdIikgLT4gVFlQRV9MT0NBTAogICAgICAgICAgICB0ZXh0LmNvbnRhaW5zKCJbSW50ZXJmYWNlXSIpICYmIHRleHQuY29udGFpbnMoIltQZWVyXSIpIC0+IFRZUEVfV0lSRUdVQVJECiAgICAgICAgICAgIGVsc2UgLT4gbnVsbAogICAgICAgIH0KICAgIH0KCiAgICAvKiogRWwgdGlwbyBkZSBjb25maWcgYWN0aXZvOiBlbCBndWFyZGFkbywgbyBlbCBxdWUgc2UgZGVkdWNlIGRlIGxvIGd1YXJkYWRvLiAqLwogICAgcHJpdmF0ZSBmdW4gZ2V0QWN0aXZlVHlwZSgpOiBTdHJpbmc/IHsKICAgICAgICB2YWwgc2F2ZWQgPSBwcmVmcy5nZXRTdHJpbmcoS0VZX0NPTkZJR19UWVBFLCAiIik/LnRyaW0oKS5vckVtcHR5KCkKICAgICAgICBpZiAoc2F2ZWQgPT0gVFlQRV9XSVJFR1VBUkQgfHwgc2F2ZWQgPT0gVFlQRV9MT0NBTCkgcmV0dXJuIHNhdmVkCiAgICAgICAgaWYgKHByZWZzLmdldFN0cmluZyhLRVlfV0dfQ09ORklHLCAiIik/LnRyaW0oKS5vckVtcHR5KCkuaXNOb3RCbGFuaygpKSByZXR1cm4gVFlQRV9XSVJFR1VBUkQKICAgICAgICBpZiAocHJlZnMuZ2V0U3RyaW5nKEtFWV9MT0NBTF9DT05GSUcsICIiKT8udHJpbSgpLm9yRW1wdHkoKS5pc05vdEJsYW5rKCkpIHJldHVybiBUWVBFX0xPQ0FMCiAgICAgICAgcmV0dXJuIG51bGwKICAgIH0KCiAgICBwcml2YXRlIGZ1biBnZXRXaXJlR3VhcmRDb25maWcoKTogU3RyaW5nID0KICAgICAgICBwcmVmcy5nZXRTdHJpbmcoS0VZX1dHX0NPTkZJRywgIiIpPy50cmltKCkub3JFbXB0eSgpCgogICAgcHJpdmF0ZSBmdW4gdXBkYXRlQ29uZmlnU3RhdHVzKCkgewogICAgICAgIGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRDb25maWdTdGF0dXMpPy50ZXh0ID0gd2hlbiAoZ2V0QWN0aXZlVHlwZSgpKSB7CiAgICAgICAgICAgIFRZUEVfV0lSRUdVQVJEIC0+ICJDb25maWcgV2lyZUd1YXJkIOKckyAoYXJjaGl2byAuY29uZikiCiAgICAgICAgICAgIFRZUEVfTE9DQUwgLT4gIkNvbmZpZyBsb2NhbCDinJMgKGFyY2hpdm8gbG9jYWwpIgogICAgICAgICAgICBlbHNlIC0+ICJTaW4gY29uZmlnIOKAlCBpbXBvcnRhIHVuIGFyY2hpdm8gLmNvbmYgbyBsb2NhbCIKICAgICAgICB9CiAgICB9CgogICAgcHJpdmF0ZSB2YWwgaW1wb3J0Q29uZmlnTGF1bmNoZXIgPSByZWdpc3RlckZvckFjdGl2aXR5UmVzdWx0KAogICAgICAgIEFjdGl2aXR5UmVzdWx0Q29udHJhY3RzLkdldENvbnRlbnQoKQogICAgKSB7IHVyaTogVXJpPyAtPgogICAgICAgIGlmICh1cmkgPT0gbnVsbCkgewogICAgICAgICAgICBWcG5Mb2cuaW5mbygiSW1wb3J0YXIgY29uZmlnIGNhbmNlbGFkby4iKQogICAgICAgICAgICByZXR1cm5AcmVnaXN0ZXJGb3JBY3Rpdml0eVJlc3VsdAogICAgICAgIH0KICAgICAgICB0cnkgewogICAgICAgICAgICAvLyBTZSBsZWUgY29tbyBCWVRFUzogZWwgYXJjaGl2byBwdWVkZSB2ZW5pciBjaWZyYWRvICguYWhvcnJvKQogICAgICAgICAgICAvLyBvIGVuIHRleHRvIHBsYW5vICguY29uZiAvIC50eHQpLiBTaSBlcyAuYWhvcnJvIHNlIGRlc2NpZnJhCiAgICAgICAgICAgIC8vIHByaW1lcm8geSBsdWVnbyBzZSBkZXRlY3RhIGVsIHRpcG8gaWd1YWwgcXVlIGFudGVzLgogICAgICAgICAgICB2YWwgYnl0ZXMgPSBjb250ZW50UmVzb2x2ZXIub3BlbklucHV0U3RyZWFtKHVyaSk/LnVzZSB7IGl0LnJlYWRCeXRlcygpIH0gPzogQnl0ZUFycmF5KDApCiAgICAgICAgICAgIHZhbCB0ZXh0ID0gaWYgKENvbmZpZ0NyeXB0by5pc0VuY3J5cHRlZChieXRlcykpIHsKICAgICAgICAgICAgICAgIHZhbCBkZWNyeXB0ZWQgPSBDb25maWdDcnlwdG8uZGVjcnlwdChieXRlcykKICAgICAgICAgICAgICAgIGlmIChkZWNyeXB0ZWQgPT0gbnVsbCkgewogICAgICAgICAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiTm8gc2UgcHVkbyBkZXNjaWZyYXIgZWwgYXJjaGl2byBkZSBjb25maWcuIikKICAgICAgICAgICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiTm8gc2UgcHVkbyBkZXNjaWZyYXIgZXNlIGFyY2hpdm8iLCBUb2FzdC5MRU5HVEhfTE9ORykuc2hvdygpCiAgICAgICAgICAgICAgICAgICAgcmV0dXJuQHJlZ2lzdGVyRm9yQWN0aXZpdHlSZXN1bHQKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIFZwbkxvZy5pbmZvKCJBcmNoaXZvIC5haG9ycm8gZGVzY2lmcmFkby4iKQogICAgICAgICAgICAgICAgZGVjcnlwdGVkLnRyaW0oKQogICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgICAgICAgU3RyaW5nKGJ5dGVzLCBDaGFyc2V0cy5VVEZfOCkudHJpbSgpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgdmFsIHR5cGUgPSBkZXRlY3RDb25maWdUeXBlKHRleHQpCiAgICAgICAgICAgIGlmICh0eXBlID09IG51bGwpIHsKICAgICAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiQXJjaGl2byBpbXBvcnRhZG8gbm8gZXMgdW5hIGNvbmZpZyB2w6FsaWRhIChuaSBXaXJlR3VhcmQgbmkgbG9jYWwpLiIpCiAgICAgICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiRXNlIGFyY2hpdm8gbm8gZXMgdW5hIGNvbmZpZyB2w6FsaWRhIiwgVG9hc3QuTEVOR1RIX0xPTkcpLnNob3coKQogICAgICAgICAgICAgICAgcmV0dXJuQHJlZ2lzdGVyRm9yQWN0aXZpdHlSZXN1bHQKICAgICAgICAgICAgfQogICAgICAgICAgICB2YWwgZWRpdG9yID0gcHJlZnMuZWRpdCgpCiAgICAgICAgICAgIGlmICh0eXBlID09IFRZUEVfV0lSRUdVQVJEKSB7CiAgICAgICAgICAgICAgICBlZGl0b3IucHV0U3RyaW5nKEtFWV9XR19DT05GSUcsIHRleHQpCiAgICAgICAgICAgICAgICBWcG5Mb2cuaW5mbygiQ29uZmlnIFdpcmVHdWFyZCBpbXBvcnRhZGEgZGVzZGUgYXJjaGl2by4iKQogICAgICAgICAgICAgICAgVG9hc3QubWFrZVRleHQodGhpcywgIkNvbmZpZyBXaXJlR3VhcmQgaW1wb3J0YWRhIOKckyIsIFRvYXN0LkxFTkdUSF9TSE9SVCkuc2hvdygpCiAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICBlZGl0b3IucHV0U3RyaW5nKEtFWV9MT0NBTF9DT05GSUcsIHRleHQpCiAgICAgICAgICAgICAgICBWcG5Mb2cuaW5mbygiQ29uZmlnIGxvY2FsIGltcG9ydGFkYSBkZXNkZSBhcmNoaXZvLiIpCiAgICAgICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiQ29uZmlnIGxvY2FsIGltcG9ydGFkYSDinJMiLCBUb2FzdC5MRU5HVEhfU0hPUlQpLnNob3coKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVkaXRvci5wdXRTdHJpbmcoS0VZX0NPTkZJR19UWVBFLCB0eXBlKQogICAgICAgICAgICBlZGl0b3IuYXBwbHkoKQogICAgICAgICAgICB1cGRhdGVDb25maWdTdGF0dXMoKQogICAgICAgICAgICB1cGRhdGVVaSgpCiAgICAgICAgfSBjYXRjaCAoZTogRXhjZXB0aW9uKSB7CiAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiTm8gc2UgcHVkbyBsZWVyIGVsIGFyY2hpdm8gZGUgY29uZmlnIiwgZSkKICAgICAgICAgICAgVG9hc3QubWFrZVRleHQodGhpcywgIk5vIHNlIHB1ZG8gbGVlciBlc2UgYXJjaGl2byIsIFRvYXN0LkxFTkdUSF9MT05HKS5zaG93KCkKICAgICAgICB9CiAgICB9CgogICAgcHJpdmF0ZSB2YXIgdnBuT24gPSBmYWxzZQogICAgcHJpdmF0ZSB2YXIgc2VydmljZVN0YXJ0ZWQgPSBmYWxzZQogICAgLy8gTW9kbyBsb2NhbCAoc2luIHNlcnZpZG9yKTogcHJveHkgbG9jYWwgY29uIGZyZW5vIGRlIHbDrWRlby4KICAgIHByaXZhdGUgdmFyIGxvY2FsT24gPSBmYWxzZQogICAgcHJpdmF0ZSB2YXIgbG9jYWxTZXJ2aWNlU3RhcnRlZCA9IGZhbHNlCiAgICBwcml2YXRlIHZhciBzdGFydFRpbWVNczogTG9uZyA9IDBMCiAgICBwcml2YXRlIHZhciBwcmV2Ung6IExvbmcgPSAwTAogICAgcHJpdmF0ZSB2YXIgcHJldlR4OiBMb25nID0gMEwKICAgIHByaXZhdGUgdmFyIHByZXZTYW1wbGVNczogTG9uZyA9IDBMCiAgICAvLyBJbnRlcnJ1cHRvcjogcmVjb3JyaWRvIGRlIGxhIHBlcmlsbGEgZW4gcHggeSDDumx0aW1vIGVzdGFkbyBkaWJ1amFkby4KICAgIHByaXZhdGUgdmFyIHN3aXRjaFRyYXZlbFB4ID0gMGYKICAgIHByaXZhdGUgdmFyIGxhc3RTd2l0Y2hPbjogQm9vbGVhbj8gPSBudWxsCgogICAgcHJpdmF0ZSB2YWwgc3RhdHNIYW5kbGVyID0gSGFuZGxlcihMb29wZXIuZ2V0TWFpbkxvb3BlcigpKQogICAgcHJpdmF0ZSB2YWwgc3RhdHNSdW5uYWJsZSA9IG9iamVjdCA6IFJ1bm5hYmxlIHsKICAgICAgICBvdmVycmlkZSBmdW4gcnVuKCkgewogICAgICAgICAgICBpZiAodnBuT24gfHwgbG9jYWxPbikgewogICAgICAgICAgICAgICAgdXBkYXRlU3RhdHNVaSgpCiAgICAgICAgICAgICAgICB1cGRhdGVEZXRhaWxzKCkKICAgICAgICAgICAgICAgIHN0YXRzSGFuZGxlci5wb3N0RGVsYXllZCh0aGlzLCAxMDAwKQogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQoKICAgIHByaXZhdGUgZnVuIGZvcm1hdEJ5dGVzKGJ5dGVzOiBMb25nKTogU3RyaW5nIHsKICAgICAgICByZXR1cm4gd2hlbiB7CiAgICAgICAgICAgIGJ5dGVzIDwgMTAyNCAtPiAiJGJ5dGVzIEIiCiAgICAgICAgICAgIGJ5dGVzIDwgMTAyNCAqIDEwMjQgLT4gU3RyaW5nLmZvcm1hdCgiJS4xZiBLQiIsIGJ5dGVzIC8gMTAyNC4wKQogICAgICAgICAgICBieXRlcyA8IDEwMjQgKiAxMDI0ICogMTAyNCAtPiBTdHJpbmcuZm9ybWF0KCIlLjFmIE1CIiwgYnl0ZXMgLyAxMDI0LjAgLyAxMDI0LjApCiAgICAgICAgICAgIGVsc2UgLT4gU3RyaW5nLmZvcm1hdCgiJS4yZiBHQiIsIGJ5dGVzIC8gMTAyNC4wIC8gMTAyNC4wIC8gMTAyNC4wKQogICAgICAgIH0KICAgIH0KCiAgICBwcml2YXRlIGZ1biB1cGRhdGVTdGF0c1VpKCkgewogICAgICAgIHRyeSB7CiAgICAgICAgICAgIHZhbCAocngsIHR4KSA9IHdoZW4gewogICAgICAgICAgICAgICAgdnBuT24gLT4gVHVubmVsTWFuYWdlci5nZXRTZXNzaW9uU3RhdHMoKQogICAgICAgICAgICAgICAgbG9jYWxPbiAtPiBMb2NhbFByb3h5VnBuU2VydmljZS5nZXRTZXNzaW9uU3RhdHMoKQogICAgICAgICAgICAgICAgZWxzZSAtPiBQYWlyKDBMLCAwTCkKICAgICAgICAgICAgfQogICAgICAgICAgICB2YWwgbm93ID0gU3lzdGVtLmN1cnJlbnRUaW1lTWlsbGlzKCkKICAgICAgICAgICAgdmFsIGR0U2VjID0gKChub3cgLSBwcmV2U2FtcGxlTXMpLmNvZXJjZUF0TGVhc3QoMUwpKSAvIDEwMDAuMAogICAgICAgICAgICB2YWwgcnhSYXRlID0gKChyeCAtIHByZXZSeCkuY29lcmNlQXRMZWFzdCgwTCkgLyBkdFNlYykudG9Mb25nKCkKICAgICAgICAgICAgdmFsIHR4UmF0ZSA9ICgodHggLSBwcmV2VHgpLmNvZXJjZUF0TGVhc3QoMEwpIC8gZHRTZWMpLnRvTG9uZygpCiAgICAgICAgICAgIHByZXZSeCA9IHJ4CiAgICAgICAgICAgIHByZXZUeCA9IHR4CiAgICAgICAgICAgIHByZXZTYW1wbGVNcyA9IG5vdwogICAgICAgICAgICBmaW5kVmlld0J5SWQ8VGV4dFZpZXc+KFIuaWQudHh0VXNlZCk/LnRleHQgPSBmb3JtYXRCeXRlcyhyeCkKICAgICAgICAgICAgZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dFNhdmVkKT8udGV4dCA9IGZvcm1hdEJ5dGVzKHR4KQogICAgICAgICAgICBmaW5kVmlld0J5SWQ8VGV4dFZpZXc+KFIuaWQudHh0UmF0ZURvd24pPy50ZXh0ID0gZm9ybWF0Qnl0ZXMocnhSYXRlKSArICIvcyIKICAgICAgICAgICAgZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dFJhdGVVcCk/LnRleHQgPSBmb3JtYXRCeXRlcyh0eFJhdGUpICsgIi9zIgogICAgICAgICAgICBmaW5kVmlld0J5SWQ8VHJhZmZpY0dyYXBoVmlldz4oUi5pZC5ncmFwaFZpZXcpPy5hZGRTYW1wbGUocnhSYXRlLnRvRmxvYXQoKSwgdHhSYXRlLnRvRmxvYXQoKSkKICAgICAgICAgICAgdmFsIGVsYXBzZWQgPSAobm93IC0gc3RhcnRUaW1lTXMpIC8gMTAwMAogICAgICAgICAgICBmaW5kVmlld0J5SWQ8VGV4dFZpZXc+KFIuaWQudHh0VGltZSk/LnRleHQgPQogICAgICAgICAgICAgICAgU3RyaW5nLmZvcm1hdCgiJTAyZDolMDJkIiwgZWxhcHNlZCAvIDYwLCBlbGFwc2VkICUgNjApCiAgICAgICAgfSBjYXRjaCAoXzogRXhjZXB0aW9uKSB7CiAgICAgICAgfQogICAgfQoKICAgIHByaXZhdGUgZnVuIHVwZGF0ZURldGFpbHMoKSB7CiAgICAgICAgZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dEJsb2NrZWRWYWx1ZSk/LnRleHQgPQogICAgICAgICAgICAiJHtMb2NhbFByb3h5VnBuU2VydmljZS5ibG9ja2VkQ291bnR9IgogICAgfQoKICAgIHByaXZhdGUgdmFsIHZwblBlcm1pc3Npb25MYXVuY2hlciA9IHJlZ2lzdGVyRm9yQWN0aXZpdHlSZXN1bHQoCiAgICAgICAgQWN0aXZpdHlSZXN1bHRDb250cmFjdHMuU3RhcnRBY3Rpdml0eUZvclJlc3VsdCgpCiAgICApIHsgcmVzdWx0IC0+CiAgICAgICAgaWYgKHJlc3VsdC5yZXN1bHRDb2RlID09IEFjdGl2aXR5LlJFU1VMVF9PSykgewogICAgICAgICAgICBWcG5Mb2cuaW5mbygiUGVybWlzbyBWUE4gYWNlcHRhZG8gcG9yIGVsIHVzdWFyaW8uIikKICAgICAgICAgICAgc3RhcnRWcG4oKQogICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgIFZwbkxvZy53YXJuKCJQZXJtaXNvIFZQTiBkZW5lZ2FkbyBwb3IgZWwgdXN1YXJpby4iKQogICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiUGVybWlzbyBWUE4gZGVuZWdhZG8iLCBUb2FzdC5MRU5HVEhfU0hPUlQpLnNob3coKQogICAgICAgIH0KICAgIH0KCiAgICAvLyBQZXJtaXNvIHBhcmEgZWwgbW9kbyBsb2NhbDogQW5kcm9pZCBzb2xvIHBlcm1pdGUgVU5BIHZwbiBhIGxhIHZlei4KICAgIHByaXZhdGUgdmFsIGxvY2FsUGVybWlzc2lvbkxhdW5jaGVyID0gcmVnaXN0ZXJGb3JBY3Rpdml0eVJlc3VsdCgKICAgICAgICBBY3Rpdml0eVJlc3VsdENvbnRyYWN0cy5TdGFydEFjdGl2aXR5Rm9yUmVzdWx0KCkKICAgICkgeyByZXN1bHQgLT4KICAgICAgICBpZiAocmVzdWx0LnJlc3VsdENvZGUgPT0gQWN0aXZpdHkuUkVTVUxUX09LKSB7CiAgICAgICAgICAgIFZwbkxvZy5pbmZvKCJQZXJtaXNvIFZQTiBhY2VwdGFkbyBwYXJhIGVsIG1vZG8gbG9jYWwuIikKICAgICAgICAgICAgc3RhcnRMb2NhbCgpCiAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgVnBuTG9nLndhcm4oIlBlcm1pc28gVlBOIGRlbmVnYWRvIHBhcmEgZWwgbW9kbyBsb2NhbC4iKQogICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiUGVybWlzbyBWUE4gZGVuZWdhZG8iLCBUb2FzdC5MRU5HVEhfU0hPUlQpLnNob3coKQogICAgICAgIH0KICAgIH0KCiAgICBwcml2YXRlIHZhbCBsb2dMaXN0ZW5lciA9IHsgcnVuT25VaVRocmVhZCB7IHVwZGF0ZUxvZ1VpKCkgfSB9CgogICAgb3ZlcnJpZGUgZnVuIG9uQ3JlYXRlKHNhdmVkSW5zdGFuY2VTdGF0ZTogQnVuZGxlPykgewogICAgICAgIHN1cGVyLm9uQ3JlYXRlKHNhdmVkSW5zdGFuY2VTdGF0ZSkKICAgICAgICBzZXRDb250ZW50VmlldyhSLmxheW91dC5hY3Rpdml0eV9tYWluKQogICAgICAgIGlmICghb3BlbkxvZ2dlZCkgewogICAgICAgICAgICBvcGVuTG9nZ2VkID0gdHJ1ZQogICAgICAgICAgICBWcG5Mb2cuaW5mbygiQXBwIGFiaWVydGEuIikKICAgICAgICB9CgogICAgICAgIC8vIEVsIGludGVycnVwdG9yOiB1biB0b3F1ZSBjb25lY3RhIG8gZGVzY29uZWN0YS4KICAgICAgICB2YWwgc3dpdGNoVHJhY2sgPSBmaW5kVmlld0J5SWQ8RnJhbWVMYXlvdXQ+KFIuaWQuc3dpdGNoVHJhY2spCiAgICAgICAgc3dpdGNoVHJhY2s/LnNldE9uQ2xpY2tMaXN0ZW5lciB7IHRvZ2dsZUNvbm5lY3Rpb24oKSB9CiAgICAgICAgLy8gUmVjb3JyaWRvIGRlIGxhIHBlcmlsbGE6IGFuY2hvIGRlIHBpc3RhIG1lbm9zIHBlcmlsbGEgeSBtw6FyZ2VuZXMuCiAgICAgICAgc3dpdGNoVHJhY2s/LnBvc3QgewogICAgICAgICAgICB2YWwgdGh1bWIgPSBmaW5kVmlld0J5SWQ8SW1hZ2VWaWV3PihSLmlkLnN3aXRjaFRodW1iKQogICAgICAgICAgICBpZiAoc3dpdGNoVHJhY2sud2lkdGggPiAwICYmIHRodW1iICE9IG51bGwpIHsKICAgICAgICAgICAgICAgIHN3aXRjaFRyYXZlbFB4ID0gKHN3aXRjaFRyYWNrLndpZHRoIC0gdGh1bWIud2lkdGggLSBkcFRvUHgoOCkpLnRvRmxvYXQoKQogICAgICAgICAgICAgICAgYXBwbHlTd2l0Y2hTdGF0ZSh2cG5PbiB8fCBsb2NhbE9uLCBhbmltYXRlID0gZmFsc2UpCiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIC8vIEVsIHJlZ2lzdHJvIHRpZW5lIHN1IHByb3BpbyBzY3JvbGw6IGFsIHRvY2FybG8sIGxhIHBhbnRhbGxhCiAgICAgICAgLy8gbm8gZGViZSByb2JhcmxlIGVsIGdlc3RvIChhbnRlcyBlbCBzY3JvbGwgZXN0YWJhIGJsb3F1ZWFkbykuCiAgICAgICAgdmFsIGxvZ1Njcm9sbCA9IGZpbmRWaWV3QnlJZDxTY3JvbGxWaWV3PihSLmlkLmxvZ1Njcm9sbCkKICAgICAgICBsb2dTY3JvbGw/LnNldE9uVG91Y2hMaXN0ZW5lciB7IHYsIGV2ZW50IC0+CiAgICAgICAgICAgIGlmIChldmVudC5hY3Rpb24gPT0gTW90aW9uRXZlbnQuQUNUSU9OX0RPV04pIHsKICAgICAgICAgICAgICAgIHYucGFyZW50LnJlcXVlc3REaXNhbGxvd0ludGVyY2VwdFRvdWNoRXZlbnQodHJ1ZSkKICAgICAgICAgICAgfQogICAgICAgICAgICBmYWxzZQogICAgICAgIH0KCiAgICAgICAgdmFsIHR4dExvZyA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRMb2cpCiAgICAgICAgdHh0TG9nLnNldE9uQ2xpY2tMaXN0ZW5lciB7CiAgICAgICAgICAgIHZhbCBjbSA9IGdldFN5c3RlbVNlcnZpY2UoQ29udGV4dC5DTElQQk9BUkRfU0VSVklDRSkgYXMgQ2xpcGJvYXJkTWFuYWdlcgogICAgICAgICAgICBjbS5zZXRQcmltYXJ5Q2xpcChDbGlwRGF0YS5uZXdQbGFpblRleHQoIkFob3JybyBWUE4gbG9nIiwgVnBuTG9nLmdldFRleHQoKSkpCiAgICAgICAgICAgIFRvYXN0Lm1ha2VUZXh0KHRoaXMsICJMb2cgY29waWFkbyIsIFRvYXN0LkxFTkdUSF9TSE9SVCkuc2hvdygpCiAgICAgICAgICAgIFZwbkxvZy5pbmZvKCJMb2cgY29waWFkbyBhbCBwb3J0YXBhcGVsZXMuIikKICAgICAgICB9CgogICAgICAgIC8vIENvbmZpZzogdW4gc29sbyBib3TDs24gZGUgaW1wb3J0YXIsIGxhIGFwcCBkZXRlY3RhIGVsIHRpcG8uCiAgICAgICAgdXBkYXRlQ29uZmlnU3RhdHVzKCkKICAgICAgICBmaW5kVmlld0J5SWQ8TWF0ZXJpYWxCdXR0b24+KFIuaWQuYnRuSW1wb3J0Q29uZmlnKT8uc2V0T25DbGlja0xpc3RlbmVyIHsKICAgICAgICAgICAgVnBuTG9nLmluZm8oIkltcG9ydGFyIGNvbmZpZyB0b2NhZG8uIikKICAgICAgICAgICAgaW1wb3J0Q29uZmlnTGF1bmNoZXIubGF1bmNoKCIqLyoiKQogICAgICAgIH0KICAgICAgICBmaW5kVmlld0J5SWQ8TWF0ZXJpYWxCdXR0b24+KFIuaWQuYnRuQ2xlYXJDb25maWcpPy5zZXRPbkNsaWNrTGlzdGVuZXIgewogICAgICAgICAgICAvLyBCb3JyYSBsYSBjb25maWcgYWN0aXZhOyBzaSBxdWVkYSBsYSBvdHJhLCBlc2EgcGFzYSBhIHNlciBsYSBhY3RpdmEuCiAgICAgICAgICAgIHZhbCBhY3RpdmUgPSBnZXRBY3RpdmVUeXBlKCkKICAgICAgICAgICAgdmFsIGVkaXRvciA9IHByZWZzLmVkaXQoKQogICAgICAgICAgICBpZiAoYWN0aXZlID09IFRZUEVfV0lSRUdVQVJEKSBlZGl0b3IucmVtb3ZlKEtFWV9XR19DT05GSUcpIGVsc2UgZWRpdG9yLnJlbW92ZShLRVlfTE9DQUxfQ09ORklHKQogICAgICAgICAgICB2YWwgb3RoZXIgPSBpZiAoYWN0aXZlID09IFRZUEVfV0lSRUdVQVJEKSB7CiAgICAgICAgICAgICAgICBwcmVmcy5nZXRTdHJpbmcoS0VZX0xPQ0FMX0NPTkZJRywgIiIpPy50cmltKCkub3JFbXB0eSgpCiAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICBwcmVmcy5nZXRTdHJpbmcoS0VZX1dHX0NPTkZJRywgIiIpPy50cmltKCkub3JFbXB0eSgpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgaWYgKG90aGVyLmlzTm90QmxhbmsoKSkgewogICAgICAgICAgICAgICAgZWRpdG9yLnB1dFN0cmluZyhLRVlfQ09ORklHX1RZUEUsIGlmIChhY3RpdmUgPT0gVFlQRV9XSVJFR1VBUkQpIFRZUEVfTE9DQUwgZWxzZSBUWVBFX1dJUkVHVUFSRCkKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgIGVkaXRvci5yZW1vdmUoS0VZX0NPTkZJR19UWVBFKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVkaXRvci5hcHBseSgpCiAgICAgICAgICAgIFZwbkxvZy5pbmZvKCJDb25maWcgYm9ycmFkYS4iKQogICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiQ29uZmlnIGJvcnJhZGEiLCBUb2FzdC5MRU5HVEhfU0hPUlQpLnNob3coKQogICAgICAgICAgICB1cGRhdGVDb25maWdTdGF0dXMoKQogICAgICAgICAgICB1cGRhdGVVaSgpCiAgICAgICAgfQoKICAgICAgICBWcG5Mb2cuYWRkTGlzdGVuZXIobG9nTGlzdGVuZXIpCiAgICAgICAgdXBkYXRlVWkoKQogICAgfQoKICAgIG92ZXJyaWRlIGZ1biBvbkRlc3Ryb3koKSB7CiAgICAgICAgc3RhdHNIYW5kbGVyLnJlbW92ZUNhbGxiYWNrcyhzdGF0c1J1bm5hYmxlKQogICAgICAgIFZwbkxvZy5yZW1vdmVMaXN0ZW5lcihsb2dMaXN0ZW5lcikKICAgICAgICBzdXBlci5vbkRlc3Ryb3koKQogICAgfQoKICAgIHByaXZhdGUgZnVuIGRwVG9QeChkcDogSW50KTogSW50ID0KICAgICAgICAoZHAgKiByZXNvdXJjZXMuZGlzcGxheU1ldHJpY3MuZGVuc2l0eSkudG9JbnQoKQoKICAgIC8qKiBEaWJ1amEgZWwgaW50ZXJydXB0b3IgKHBlcmlsbGEgKyBjb2xvciBkZSBwaXN0YSkuIFNvbG8gYW5pbWEgc2kgY2FtYmnDsy4gKi8KICAgIHByaXZhdGUgZnVuIGFwcGx5U3dpdGNoU3RhdGUob246IEJvb2xlYW4sIGFuaW1hdGU6IEJvb2xlYW4pIHsKICAgICAgICB2YWwgdHJhY2sgPSBmaW5kVmlld0J5SWQ8RnJhbWVMYXlvdXQ+KFIuaWQuc3dpdGNoVHJhY2spID86IHJldHVybgogICAgICAgIHZhbCB0aHVtYiA9IGZpbmRWaWV3QnlJZDxJbWFnZVZpZXc+KFIuaWQuc3dpdGNoVGh1bWIpID86IHJldHVybgogICAgICAgIHZhbCBjaGFuZ2VkID0gbGFzdFN3aXRjaE9uICE9IG9uCiAgICAgICAgbGFzdFN3aXRjaE9uID0gb24KICAgICAgICB0cmFjay5zZXRCYWNrZ3JvdW5kUmVzb3VyY2UoCiAgICAgICAgICAgIGlmIChvbikgUi5kcmF3YWJsZS5iZ19zd2l0Y2hfb24gZWxzZSBSLmRyYXdhYmxlLmJnX3N3aXRjaF9vZmYKICAgICAgICApCiAgICAgICAgdmFsIHRhcmdldCA9IGlmIChvbikgc3dpdGNoVHJhdmVsUHggZWxzZSAwZgogICAgICAgIGlmIChhbmltYXRlICYmIGNoYW5nZWQgJiYgc3dpdGNoVHJhdmVsUHggPiAwZikgewogICAgICAgICAgICB0aHVtYi5hbmltYXRlKCkudHJhbnNsYXRpb25YKHRhcmdldCkuc2V0RHVyYXRpb24oMjIwKS5zdGFydCgpCiAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgdGh1bWIudHJhbnNsYXRpb25YID0gdGFyZ2V0CiAgICAgICAgfQogICAgfQoKICAgIHByaXZhdGUgZnVuIHRvZ2dsZUNvbm5lY3Rpb24oKSB7CiAgICAgICAgaWYgKHZwbk9uKSB7CiAgICAgICAgICAgIHN0b3BWcG4oKQogICAgICAgICAgICByZXR1cm4KICAgICAgICB9CiAgICAgICAgaWYgKGxvY2FsT24pIHsKICAgICAgICAgICAgc3RvcExvY2FsKCkKICAgICAgICAgICAgcmV0dXJuCiAgICAgICAgfQogICAgICAgIFZwbkxvZy5pbmZvKCJJbnRlcnJ1cHRvciB0b2NhZG86IGNvbmVjdGFyLiIpCiAgICAgICAgd2hlbiAoZ2V0QWN0aXZlVHlwZSgpKSB7CiAgICAgICAgICAgIFRZUEVfV0lSRUdVQVJEIC0+IHsKICAgICAgICAgICAgICAgIC8vIFNpbiBjb25maWcgZGUgV2lyZUd1YXJkIG5vIHNlIGNvbmVjdGEgbmkgc2UgZmluZ2UgY29uZWN0YWRvLgogICAgICAgICAgICAgICAgaWYgKGdldFdpcmVHdWFyZENvbmZpZygpLmlzQmxhbmsoKSkgewogICAgICAgICAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiU2luIGNvbmZpZyBXaXJlR3VhcmQuIEltcG9ydGEgZWwgYXJjaGl2byAuY29uZiBkZWwgc2Vydmlkb3IuIikKICAgICAgICAgICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiU2luIGNvbmZpZzogaW1wb3J0YSBlbCBhcmNoaXZvIC5jb25mIGRlbCBzZXJ2aWRvciIsIFRvYXN0LkxFTkdUSF9MT05HKS5zaG93KCkKICAgICAgICAgICAgICAgICAgICByZXR1cm4KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIHZhbCBpbnRlbnQgPSBWcG5TZXJ2aWNlLnByZXBhcmUodGhpcykKICAgICAgICAgICAgICAgIGlmIChpbnRlbnQgIT0gbnVsbCkgdnBuUGVybWlzc2lvbkxhdW5jaGVyLmxhdW5jaChpbnRlbnQpIGVsc2Ugc3RhcnRWcG4oKQogICAgICAgICAgICB9CiAgICAgICAgICAgIFRZUEVfTE9DQUwgLT4gewogICAgICAgICAgICAgICAgdmFsIGludGVudCA9IFZwblNlcnZpY2UucHJlcGFyZSh0aGlzKQogICAgICAgICAgICAgICAgaWYgKGludGVudCAhPSBudWxsKSBsb2NhbFBlcm1pc3Npb25MYXVuY2hlci5sYXVuY2goaW50ZW50KSBlbHNlIHN0YXJ0TG9jYWwoKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsc2UgLT4gewogICAgICAgICAgICAgICAgVnBuTG9nLmVycm9yKCJTaW4gY29uZmlnLiBJbXBvcnRhIHVuIGFyY2hpdm8gLmNvbmYgbyB1bmEgY29uZmlnIGxvY2FsLiIpCiAgICAgICAgICAgICAgICBUb2FzdC5tYWtlVGV4dCh0aGlzLCAiU2luIGNvbmZpZzogaW1wb3J0YSB1biBhcmNoaXZvIC5jb25mIG8gbG9jYWwiLCBUb2FzdC5MRU5HVEhfTE9ORykuc2hvdygpCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CgogICAgcHJpdmF0ZSBmdW4gcmVzZXRTdGF0cygpIHsKICAgICAgICBwcmV2UnggPSAwTAogICAgICAgIHByZXZUeCA9IDBMCiAgICAgICAgcHJldlNhbXBsZU1zID0gU3lzdGVtLmN1cnJlbnRUaW1lTWlsbGlzKCkKICAgICAgICBmaW5kVmlld0J5SWQ8VHJhZmZpY0dyYXBoVmlldz4oUi5pZC5ncmFwaFZpZXcpPy5jbGVhcigpCiAgICB9CgogICAgcHJpdmF0ZSBmdW4gc3RhcnRWcG4oKSB7CiAgICAgICAgdmFsIGludGVudCA9IEludGVudCh0aGlzLCBBaG9ycm9WcG5TZXJ2aWNlOjpjbGFzcy5qYXZhKQogICAgICAgIGludGVudC5hY3Rpb24gPSBBaG9ycm9WcG5TZXJ2aWNlLkFDVElPTl9TVEFSVAogICAgICAgIHRyeSB7CiAgICAgICAgICAgIGlmIChCdWlsZC5WRVJTSU9OLlNES19JTlQgPj0gQnVpbGQuVkVSU0lPTl9DT0RFUy5PKSB7CiAgICAgICAgICAgICAgICBzdGFydEZvcmVncm91bmRTZXJ2aWNlKGludGVudCkKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgIHN0YXJ0U2VydmljZShpbnRlbnQpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgc2VydmljZVN0YXJ0ZWQgPSB0cnVlCiAgICAgICAgfSBjYXRjaCAoZTogRXhjZXB0aW9uKSB7CiAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiTm8gc2UgcHVkbyBhcnJhbmNhciBlbCBzZXJ2aWNpbyIsIGUpCiAgICAgICAgICAgIFRvYXN0Lm1ha2VUZXh0KHRoaXMsICJObyBzZSBwdWRvIGFycmFuY2FyIGVsIHNlcnZpY2lvIiwgVG9hc3QuTEVOR1RIX1NIT1JUKS5zaG93KCkKICAgICAgICAgICAgcmV0dXJuCiAgICAgICAgfQogICAgICAgIHZwbk9uID0gdHJ1ZQogICAgICAgIHN0YXJ0VGltZU1zID0gU3lzdGVtLmN1cnJlbnRUaW1lTWlsbGlzKCkKICAgICAgICBWcG5Mb2cuaW5mbygiVlBOIGVuY2VuZGlkYSBkZXNkZSBsYSBhcHAuIikKICAgICAgICByZXNldFN0YXRzKCkKICAgICAgICB1cGRhdGVVaSgpCiAgICAgICAgc3RhdHNIYW5kbGVyLnJlbW92ZUNhbGxiYWNrcyhzdGF0c1J1bm5hYmxlKQogICAgICAgIHN0YXRzSGFuZGxlci5wb3N0KHN0YXRzUnVubmFibGUpCiAgICB9CgogICAgcHJpdmF0ZSBmdW4gc3RvcFZwbigpIHsKICAgICAgICBzdGF0c0hhbmRsZXIucmVtb3ZlQ2FsbGJhY2tzKHN0YXRzUnVubmFibGUpCiAgICAgICAgLy8gQU5URVM6IHNlIG1hbmRhYmEgZWwgU1RPUCBjb24gc3RhcnRGb3JlZ3JvdW5kU2VydmljZSgpLiBFc28gY3JlYQogICAgICAgIC8vIHVuYSBpbnN0YW5jaWEgTlVFVkEgZGVsIHNlcnZpY2lvIHNvbG8gcGFyYSBwYXJhcmxvLCB5IGVzYQogICAgICAgIC8vIGluc3RhbmNpYSBsbGFtYWJhIGEgc3RvcEZvcmVncm91bmQgc2luIGhhYmVyIGFycmFuY2FkbyBlbAogICAgICAgIC8vIGZvcmVncm91bmQg4oCUIGFow60gc2UgY2VycmFiYSBsYSBhcHAgYWwgdG9jYXIgRGVzY29uZWN0YXIuCiAgICAgICAgLy8gQUhPUkE6IHN0b3BTZXJ2aWNlKCkgbm8gY3JlYSBuaW5ndW5hIGluc3RhbmNpYSwgc29sbyBwYXJhIGVsCiAgICAgICAgLy8gc2VydmljaW8gc2kgZXN0w6EgY29ycmllbmRvLiBZIHNpIG51bmNhIGFycmFuY8OzLCBubyBzZSBsZSBtYW5kYSBuYWRhLgogICAgICAgIGlmIChzZXJ2aWNlU3RhcnRlZCkgewogICAgICAgICAgICB0cnkgewogICAgICAgICAgICAgICAgdmFsIGludGVudCA9IEludGVudCh0aGlzLCBBaG9ycm9WcG5TZXJ2aWNlOjpjbGFzcy5qYXZhKQogICAgICAgICAgICAgICAgc3RvcFNlcnZpY2UoaW50ZW50KQogICAgICAgICAgICB9IGNhdGNoIChlOiBFeGNlcHRpb24pIHsKICAgICAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiTm8gc2UgcHVkbyBwYXJhciBlbCBzZXJ2aWNpbyIsIGUpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgc2VydmljZVN0YXJ0ZWQgPSBmYWxzZQogICAgICAgIH0KICAgICAgICB2cG5PbiA9IGZhbHNlCiAgICAgICAgVnBuTG9nLmluZm8oIlZQTiBhcGFnYWRhIGRlc2RlIGxhIGFwcC4iKQogICAgICAgIHVwZGF0ZVVpKCkKICAgIH0KCiAgICAvLyAtLS0tIE1vZG8gbG9jYWwgKHNpbiBzZXJ2aWRvcik6IHByb3h5IGxvY2FsIGNvbiBmcmVubyBkZSB2w61kZW8gLS0tLQogICAgcHJpdmF0ZSBmdW4gc3RhcnRMb2NhbCgpIHsKICAgICAgICB2YWwgaW50ZW50ID0gSW50ZW50KHRoaXMsIExvY2FsUHJveHlWcG5TZXJ2aWNlOjpjbGFzcy5qYXZhKQogICAgICAgIGludGVudC5hY3Rpb24gPSBMb2NhbFByb3h5VnBuU2VydmljZS5BQ1RJT05fU1RBUlQKICAgICAgICB0cnkgewogICAgICAgICAgICBpZiAoQnVpbGQuVkVSU0lPTi5TREtfSU5UID49IEJ1aWxkLlZFUlNJT05fQ09ERVMuTykgewogICAgICAgICAgICAgICAgc3RhcnRGb3JlZ3JvdW5kU2VydmljZShpbnRlbnQpCiAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICBzdGFydFNlcnZpY2UoaW50ZW50KQogICAgICAgICAgICB9CiAgICAgICAgICAgIGxvY2FsU2VydmljZVN0YXJ0ZWQgPSB0cnVlCiAgICAgICAgfSBjYXRjaCAoZTogRXhjZXB0aW9uKSB7CiAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiTm8gc2UgcHVkbyBhcnJhbmNhciBlbCBtb2RvIGxvY2FsIiwgZSkKICAgICAgICAgICAgVG9hc3QubWFrZVRleHQodGhpcywgIk5vIHNlIHB1ZG8gYXJyYW5jYXIgZWwgbW9kbyBsb2NhbCIsIFRvYXN0LkxFTkdUSF9TSE9SVCkuc2hvdygpCiAgICAgICAgICAgIHJldHVybgogICAgICAgIH0KICAgICAgICBsb2NhbE9uID0gdHJ1ZQogICAgICAgIHN0YXJ0VGltZU1zID0gU3lzdGVtLmN1cnJlbnRUaW1lTWlsbGlzKCkKICAgICAgICBWcG5Mb2cuaW5mbygiTW9kbyBsb2NhbCBlbmNlbmRpZG8gZGVzZGUgbGEgYXBwLiIpCiAgICAgICAgcmVzZXRTdGF0cygpCiAgICAgICAgdXBkYXRlVWkoKQogICAgICAgIHN0YXRzSGFuZGxlci5yZW1vdmVDYWxsYmFja3Moc3RhdHNSdW5uYWJsZSkKICAgICAgICBzdGF0c0hhbmRsZXIucG9zdChzdGF0c1J1bm5hYmxlKQogICAgfQoKICAgIHByaXZhdGUgZnVuIHN0b3BMb2NhbCgpIHsKICAgICAgICBzdGF0c0hhbmRsZXIucmVtb3ZlQ2FsbGJhY2tzKHN0YXRzUnVubmFibGUpCiAgICAgICAgaWYgKGxvY2FsU2VydmljZVN0YXJ0ZWQpIHsKICAgICAgICAgICAgdHJ5IHsKICAgICAgICAgICAgICAgIHZhbCBpbnRlbnQgPSBJbnRlbnQodGhpcywgTG9jYWxQcm94eVZwblNlcnZpY2U6OmNsYXNzLmphdmEpCiAgICAgICAgICAgICAgICBzdG9wU2VydmljZShpbnRlbnQpCiAgICAgICAgICAgIH0gY2F0Y2ggKGU6IEV4Y2VwdGlvbikgewogICAgICAgICAgICAgICAgVnBuTG9nLmVycm9yKCJObyBzZSBwdWRvIHBhcmFyIGVsIG1vZG8gbG9jYWwiLCBlKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGxvY2FsU2VydmljZVN0YXJ0ZWQgPSBmYWxzZQogICAgICAgIH0KICAgICAgICBsb2NhbE9uID0gZmFsc2UKICAgICAgICBWcG5Mb2cuaW5mbygiTW9kbyBsb2NhbCBhcGFnYWRvIGRlc2RlIGxhIGFwcC4iKQogICAgICAgIHVwZGF0ZVVpKCkKICAgIH0KCiAgICBwcml2YXRlIGZ1biB1cGRhdGVVaSgpIHsKICAgICAgICB0cnkgewogICAgICAgICAgICB2YWwgb24gPSB2cG5PbiB8fCBsb2NhbE9uCiAgICAgICAgICAgIGFwcGx5U3dpdGNoU3RhdGUob24sIGFuaW1hdGUgPSB0cnVlKQogICAgICAgICAgICB2YWwgcGlsbCA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRTdGF0dXNQaWxsKQogICAgICAgICAgICB2YWwgdGl0bGUgPSBmaW5kVmlld0J5SWQ8VGV4dFZpZXc+KFIuaWQudHh0U3RhdHVzVGl0bGUpCiAgICAgICAgICAgIHZhbCBzdWIgPSBmaW5kVmlld0J5SWQ8VGV4dFZpZXc+KFIuaWQudHh0U3RhdHVzU3ViKQogICAgICAgICAgICB2YWwgbW9kZVZhbHVlID0gZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dE1vZGVWYWx1ZSkKICAgICAgICAgICAgdmFsIHNlcnZlclZhbHVlID0gZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dFNlcnZlclZhbHVlKQogICAgICAgICAgICB2YWwgcHJvdG9WYWx1ZSA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRQcm90b1ZhbHVlKQogICAgICAgICAgICB2YWwgdmlkZW9WYWx1ZSA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRWaWRlb1ZhbHVlKQogICAgICAgICAgICB2YWwgdXNlZCA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRVc2VkKQogICAgICAgICAgICB2YWwgc2F2ZWQgPSBmaW5kVmlld0J5SWQ8VGV4dFZpZXc+KFIuaWQudHh0U2F2ZWQpCiAgICAgICAgICAgIHZhbCB0aW1lID0gZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dFRpbWUpCiAgICAgICAgICAgIHZhbCByYXRlRG93biA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRSYXRlRG93bikKICAgICAgICAgICAgdmFsIHJhdGVVcCA9IGZpbmRWaWV3QnlJZDxUZXh0Vmlldz4oUi5pZC50eHRSYXRlVXApCiAgICAgICAgICAgIHVwZGF0ZURldGFpbHMoKQogICAgICAgICAgICB3aGVuIHsKICAgICAgICAgICAgICAgIHZwbk9uIC0+IHsKICAgICAgICAgICAgICAgICAgICBwaWxsPy50ZXh0ID0gIuKXjyAgT05MSU5FIgogICAgICAgICAgICAgICAgICAgIHBpbGw/LnNldEJhY2tncm91bmRSZXNvdXJjZShSLmRyYXdhYmxlLmJnX3BpbGxfb24pCiAgICAgICAgICAgICAgICAgICAgdGl0bGU/LnRleHQgPSAiUHJvdGVnaWRvIgogICAgICAgICAgICAgICAgICAgIHN1Yj8udGV4dCA9ICJUdSBJUCBlc3TDoSBvY3VsdGEiCiAgICAgICAgICAgICAgICAgICAgc3ViPy5zZXRUZXh0Q29sb3IoZ2V0Q29sb3IoUi5jb2xvci5saW1lKSkKICAgICAgICAgICAgICAgICAgICBtb2RlVmFsdWU/LnRleHQgPSAiV2lyZUd1YXJkIgogICAgICAgICAgICAgICAgICAgIHNlcnZlclZhbHVlPy50ZXh0ID0gIlNlcnZpZG9yIEFob3JybyDCtyAxMC44LjAuMSIKICAgICAgICAgICAgICAgICAgICBwcm90b1ZhbHVlPy50ZXh0ID0gIldpcmVHdWFyZCIKICAgICAgICAgICAgICAgICAgICB2aWRlb1ZhbHVlPy50ZXh0ID0gIlNoYXBpbmcgZW4gc2Vydmlkb3IiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBsb2NhbE9uIC0+IHsKICAgICAgICAgICAgICAgICAgICBwaWxsPy50ZXh0ID0gIuKXjyAgT05MSU5FIgogICAgICAgICAgICAgICAgICAgIHBpbGw/LnNldEJhY2tncm91bmRSZXNvdXJjZShSLmRyYXdhYmxlLmJnX3BpbGxfb24pCiAgICAgICAgICAgICAgICAgICAgdGl0bGU/LnRleHQgPSAiTW9kbyBsb2NhbCIKICAgICAgICAgICAgICAgICAgICBzdWI/LnRleHQgPSAiVHUgSVAgZXMgbGEgZGUgQ3ViYSIKICAgICAgICAgICAgICAgICAgICBzdWI/LnNldFRleHRDb2xvcihnZXRDb2xvcihSLmNvbG9yLmdvbGQpKQogICAgICAgICAgICAgICAgICAgIG1vZGVWYWx1ZT8udGV4dCA9ICJMb2NhbCIKICAgICAgICAgICAgICAgICAgICBzZXJ2ZXJWYWx1ZT8udGV4dCA9ICJTaW4gc2Vydmlkb3IiCiAgICAgICAgICAgICAgICAgICAgcHJvdG9WYWx1ZT8udGV4dCA9ICJQcm94eSBsb2NhbCIKICAgICAgICAgICAgICAgICAgICB2aWRlb1ZhbHVlPy50ZXh0ID0gIkZyZW5vIDAsNSBNYnBzIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgZWxzZSAtPiB7CiAgICAgICAgICAgICAgICAgICAgcGlsbD8udGV4dCA9ICLil48gIE9GRkxJTkUiCiAgICAgICAgICAgICAgICAgICAgcGlsbD8uc2V0QmFja2dyb3VuZFJlc291cmNlKFIuZHJhd2FibGUuYmdfcGlsbF9vZmYpCiAgICAgICAgICAgICAgICAgICAgdGl0bGU/LnRleHQgPSAiRGVzY29uZWN0YWRvIgogICAgICAgICAgICAgICAgICAgIHN1Yj8udGV4dCA9ICJUdSBJUCBlc3TDoSBleHB1ZXN0YSIKICAgICAgICAgICAgICAgICAgICBzdWI/LnNldFRleHRDb2xvcihnZXRDb2xvcihSLmNvbG9yLnJlZCkpCiAgICAgICAgICAgICAgICAgICAgbW9kZVZhbHVlPy50ZXh0ID0gd2hlbiAoZ2V0QWN0aXZlVHlwZSgpKSB7CiAgICAgICAgICAgICAgICAgICAgICAgIFRZUEVfV0lSRUdVQVJEIC0+ICJXaXJlR3VhcmQiCiAgICAgICAgICAgICAgICAgICAgICAgIFRZUEVfTE9DQUwgLT4gIkxvY2FsIgogICAgICAgICAgICAgICAgICAgICAgICBlbHNlIC0+ICJTaW4gY29uZmlnIgogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBzZXJ2ZXJWYWx1ZT8udGV4dCA9ICJObyBjb25lY3RhZG8iCiAgICAgICAgICAgICAgICAgICAgcHJvdG9WYWx1ZT8udGV4dCA9ICLigJQiCiAgICAgICAgICAgICAgICAgICAgdmlkZW9WYWx1ZT8udGV4dCA9ICLigJQiCiAgICAgICAgICAgICAgICAgICAgdXNlZD8udGV4dCA9ICIwIEIiCiAgICAgICAgICAgICAgICAgICAgc2F2ZWQ/LnRleHQgPSAiMCBCIgogICAgICAgICAgICAgICAgICAgIHRpbWU/LnRleHQgPSAiMDA6MDAiCiAgICAgICAgICAgICAgICAgICAgcmF0ZURvd24/LnRleHQgPSAiMCBCL3MiCiAgICAgICAgICAgICAgICAgICAgcmF0ZVVwPy50ZXh0ID0gIjAgQi9zIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgfSBjYXRjaCAoZTogRXhjZXB0aW9uKSB7CiAgICAgICAgICAgIFZwbkxvZy5lcnJvcigiRmFsbG8gYWwgYWN0dWFsaXphciBsYSBwYW50YWxsYSIsIGUpCiAgICAgICAgfQogICAgICAgIHVwZGF0ZUxvZ1VpKCkKICAgIH0KCiAgICBwcml2YXRlIGZ1biB1cGRhdGVMb2dVaSgpIHsKICAgICAgICB2YWwgdHh0TG9nID0gZmluZFZpZXdCeUlkPFRleHRWaWV3PihSLmlkLnR4dExvZykgPzogcmV0dXJuCiAgICAgICAgdHh0TG9nLnRleHQgPSBWcG5Mb2cuZ2V0VGV4dCgpCiAgICAgICAgLy8gRWwgcmVnaXN0cm8gYmFqYSBzb2xvIGhhc3RhIGVsIGZpbmFsLCBwYXJhIHZlciBsbyDDumx0aW1vLgogICAgICAgIGZpbmRWaWV3QnlJZDxTY3JvbGxWaWV3PihSLmlkLmxvZ1Njcm9sbCk/LnBvc3QgewogICAgICAgICAgICBmaW5kVmlld0J5SWQ8U2Nyb2xsVmlldz4oUi5pZC5sb2dTY3JvbGwpPy5mdWxsU2Nyb2xsKFZpZXcuRk9DVVNfRE9XTikKICAgICAgICB9CiAgICB9Cn0K
+package com.ahorro.vpn
+
+import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.net.VpnService
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.MotionEvent
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
+
+/**
+ * UNA sola app, UN solo interruptor, la config que sea.
+ * Lo pidió Sam 18 nov 2026: lo mismo un archivo config local que
+ * un archivo config de WireGuard, la app los ejecuta igual.
+ * - Si la config trae [Interface] + [Peer] -> WireGuard (túnel al servidor).
+ * - Si trae [Local] -> modo local (proxy local: todo el tráfico pasa
+ *   por la app, bloqueo DNS y freno de vídeo a 0,5 Mbps, sin servidor).
+ * La app detecta cuál es al importar y el interruptor arranca ese modo.
+ * - La config puede venir cifrada (.ahorro): se descifra al importar.
+ *
+ * Diseño v7 "CONSOLA" (18 nov 2026, pedido de Sam: interfaz nueva
+ * de paquete, nada de retoque del v6, nada de aspecto de IA):
+ * tarjetas sólidas con borde fino, un solo acento esmeralda, todo
+ * simétrico y centrado, interruptor real con perilla que se desliza,
+ * registro con scroll de verdad y detalles de conexión de VPN pro.
+ */
+class MainActivity : AppCompatActivity() {
+
+    companion object {
+        // "App abierta" se registra una sola vez por proceso.
+        // Antes se duplicaba porque onCreate se vuelve a llamar
+        // al volver del diálogo de permiso VPN.
+        private var openLogged = false
+        private const val PREFS = "ahorro_vpn_prefs"
+        private const val KEY_WG_CONFIG = "wg_config"
+        private const val KEY_LOCAL_CONFIG = "local_config"
+        private const val KEY_CONFIG_TYPE = "config_type"
+        private const val TYPE_WIREGUARD = "wireguard"
+        private const val TYPE_LOCAL = "local"
+    }
+
+    private val prefs by lazy { getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
+
+    /** Detecta el tipo de config por su contenido. Null si no es válida. */
+    private fun detectConfigType(text: String): String? {
+        return when {
+            text.contains("[Local]") -> TYPE_LOCAL
+            text.contains("[Interface]") && text.contains("[Peer]") -> TYPE_WIREGUARD
+            else -> null
+        }
+    }
+
+    /** El tipo de config activo: el guardado, o el que se deduce de lo guardado. */
+    private fun getActiveType(): String? {
+        val saved = prefs.getString(KEY_CONFIG_TYPE, "")?.trim().orEmpty()
+        if (saved == TYPE_WIREGUARD || saved == TYPE_LOCAL) return saved
+        if (prefs.getString(KEY_WG_CONFIG, "")?.trim().orEmpty().isNotBlank()) return TYPE_WIREGUARD
+        if (prefs.getString(KEY_LOCAL_CONFIG, "")?.trim().orEmpty().isNotBlank()) return TYPE_LOCAL
+        return null
+    }
+
+    private fun getWireGuardConfig(): String =
+        prefs.getString(KEY_WG_CONFIG, "")?.trim().orEmpty()
+
+    private fun updateConfigStatus() {
+        findViewById<TextView>(R.id.txtConfigStatus)?.text = when (getActiveType()) {
+            TYPE_WIREGUARD -> "Config WireGuard ✓ (archivo .conf)"
+            TYPE_LOCAL -> "Config local ✓ (archivo local)"
+            else -> "Sin config — importa un archivo .conf o local"
+        }
+    }
+
+    private val importConfigLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri == null) {
+            VpnLog.info("Importar config cancelado.")
+            return@registerForActivityResult
+        }
+        try {
+            // Se lee como BYTES: el archivo puede venir cifrado (.ahorro)
+            // o en texto plano (.conf / .txt). Si es .ahorro se descifra
+            // primero y luego se detecta el tipo igual que antes.
+            val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: ByteArray(0)
+            val text = if (ConfigCrypto.isEncrypted(bytes)) {
+                val decrypted = ConfigCrypto.decrypt(bytes)
+                if (decrypted == null) {
+                    VpnLog.error("No se pudo descifrar el archivo de config.")
+                    Toast.makeText(this, "No se pudo descifrar ese archivo", Toast.LENGTH_LONG).show()
+                    return@registerForActivityResult
+                }
+                VpnLog.info("Archivo .ahorro descifrado.")
+                decrypted.trim()
+            } else {
+                String(bytes, Charsets.UTF_8).trim()
+            }
+            val type = detectConfigType(text)
+            if (type == null) {
+                VpnLog.error("Archivo importado no es una config válida (ni WireGuard ni local).")
+                Toast.makeText(this, "Ese archivo no es una config válida", Toast.LENGTH_LONG).show()
+                return@registerForActivityResult
+            }
+            val editor = prefs.edit()
+            if (type == TYPE_WIREGUARD) {
+                editor.putString(KEY_WG_CONFIG, text)
+                VpnLog.info("Config WireGuard importada desde archivo.")
+                Toast.makeText(this, "Config WireGuard importada ✓", Toast.LENGTH_SHORT).show()
+            } else {
+                editor.putString(KEY_LOCAL_CONFIG, text)
+                VpnLog.info("Config local importada desde archivo.")
+                Toast.makeText(this, "Config local importada ✓", Toast.LENGTH_SHORT).show()
+            }
+            editor.putString(KEY_CONFIG_TYPE, type)
+            editor.apply()
+            updateConfigStatus()
+            updateUi()
+        } catch (e: Exception) {
+            VpnLog.error("No se pudo leer el archivo de config", e)
+            Toast.makeText(this, "No se pudo leer ese archivo", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private var vpnOn = false
+    private var serviceStarted = false
+    // Modo local (sin servidor): proxy local con freno de vídeo.
+    private var localOn = false
+    private var localServiceStarted = false
+    private var startTimeMs: Long = 0L
+    private var prevRx: Long = 0L
+    private var prevTx: Long = 0L
+    private var prevSampleMs: Long = 0L
+    // Interruptor: recorrido de la perilla en px y último estado dibujado.
+    private var switchTravelPx = 0f
+    private var lastSwitchOn: Boolean? = null
+
+    private val statsHandler = Handler(Looper.getMainLooper())
+    private val statsRunnable = object : Runnable {
+        override fun run() {
+            if (vpnOn || localOn) {
+                updateStatsUi()
+                updateDetails()
+                statsHandler.postDelayed(this, 1000)
+            }
+        }
+    }
+
+    private fun formatBytes(bytes: Long): String {
+        return when {
+            bytes < 1024 -> "$bytes B"
+            bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
+            bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / 1024.0 / 1024.0)
+            else -> String.format("%.2f GB", bytes / 1024.0 / 1024.0 / 1024.0)
+        }
+    }
+
+    private fun updateStatsUi() {
+        try {
+            val (rx, tx) = when {
+                vpnOn -> TunnelManager.getSessionStats()
+                localOn -> LocalProxyVpnService.getSessionStats()
+                else -> Pair(0L, 0L)
+            }
+            val now = System.currentTimeMillis()
+            val dtSec = ((now - prevSampleMs).coerceAtLeast(1L)) / 1000.0
+            val rxRate = ((rx - prevRx).coerceAtLeast(0L) / dtSec).toLong()
+            val txRate = ((tx - prevTx).coerceAtLeast(0L) / dtSec).toLong()
+            prevRx = rx
+            prevTx = tx
+            prevSampleMs = now
+            findViewById<TextView>(R.id.txtUsed)?.text = formatBytes(rx)
+            findViewById<TextView>(R.id.txtSaved)?.text = formatBytes(tx)
+            findViewById<TextView>(R.id.txtRateDown)?.text = formatBytes(rxRate) + "/s"
+            findViewById<TextView>(R.id.txtRateUp)?.text = formatBytes(txRate) + "/s"
+            findViewById<TrafficGraphView>(R.id.graphView)?.addSample(rxRate.toFloat(), txRate.toFloat())
+            val elapsed = (now - startTimeMs) / 1000
+            findViewById<TextView>(R.id.txtTime)?.text =
+                String.format("%02d:%02d", elapsed / 60, elapsed % 60)
+        } catch (_: Exception) {
+        }
+    }
+
+    private fun updateDetails() {
+        findViewById<TextView>(R.id.txtBlockedValue)?.text =
+            "${LocalProxyVpnService.blockedCount}"
+    }
+
+    private val vpnPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            VpnLog.info("Permiso VPN aceptado por el usuario.")
+            startVpn()
+        } else {
+            VpnLog.warn("Permiso VPN denegado por el usuario.")
+            Toast.makeText(this, "Permiso VPN denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Permiso para el modo local: Android solo permite UNA vpn a la vez.
+    private val localPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            VpnLog.info("Permiso VPN aceptado para el modo local.")
+            startLocal()
+        } else {
+            VpnLog.warn("Permiso VPN denegado para el modo local.")
+            Toast.makeText(this, "Permiso VPN denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val logListener = { runOnUiThread { updateLogUi() } }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        if (!openLogged) {
+            openLogged = true
+            VpnLog.info("App abierta.")
+        }
+
+        // El interruptor: un toque conecta o desconecta.
+        val switchTrack = findViewById<FrameLayout>(R.id.switchTrack)
+        switchTrack?.setOnClickListener { toggleConnection() }
+        // Recorrido de la perilla: ancho de pista menos perilla y márgenes.
+        switchTrack?.post {
+            val thumb = findViewById<ImageView>(R.id.switchThumb)
+            if (switchTrack.width > 0 && thumb != null) {
+                switchTravelPx = (switchTrack.width - thumb.width - dpToPx(8)).toFloat()
+                applySwitchState(vpnOn || localOn, animate = false)
+            }
+        }
+
+        // El registro tiene su propio scroll: al tocarlo, la pantalla
+        // no debe robarle el gesto (antes el scroll estaba bloqueado).
+        val logScroll = findViewById<ScrollView>(R.id.logScroll)
+        logScroll?.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.parent.requestDisallowInterceptTouchEvent(true)
+            }
+            false
+        }
+
+        val txtLog = findViewById<TextView>(R.id.txtLog)
+        txtLog.setOnClickListener {
+            val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            cm.setPrimaryClip(ClipData.newPlainText("Ahorro VPN log", VpnLog.getText()))
+            Toast.makeText(this, "Log copiado", Toast.LENGTH_SHORT).show()
+            VpnLog.info("Log copiado al portapapeles.")
+        }
+
+        // Config: un solo botón de importar, la app detecta el tipo.
+        updateConfigStatus()
+        findViewById<MaterialButton>(R.id.btnImportConfig)?.setOnClickListener {
+            VpnLog.info("Importar config tocado.")
+            importConfigLauncher.launch("*/*")
+        }
+        findViewById<MaterialButton>(R.id.btnClearConfig)?.setOnClickListener {
+            // Borra la config activa; si queda la otra, esa pasa a ser la activa.
+            val active = getActiveType()
+            val editor = prefs.edit()
+            if (active == TYPE_WIREGUARD) editor.remove(KEY_WG_CONFIG) else editor.remove(KEY_LOCAL_CONFIG)
+            val other = if (active == TYPE_WIREGUARD) {
+                prefs.getString(KEY_LOCAL_CONFIG, "")?.trim().orEmpty()
+            } else {
+                prefs.getString(KEY_WG_CONFIG, "")?.trim().orEmpty()
+            }
+            if (other.isNotBlank()) {
+                editor.putString(KEY_CONFIG_TYPE, if (active == TYPE_WIREGUARD) TYPE_LOCAL else TYPE_WIREGUARD)
+            } else {
+                editor.remove(KEY_CONFIG_TYPE)
+            }
+            editor.apply()
+            VpnLog.info("Config borrada.")
+            Toast.makeText(this, "Config borrada", Toast.LENGTH_SHORT).show()
+            updateConfigStatus()
+            updateUi()
+        }
+
+        VpnLog.addListener(logListener)
+        updateUi()
+    }
+
+    override fun onDestroy() {
+        statsHandler.removeCallbacks(statsRunnable)
+        VpnLog.removeListener(logListener)
+        super.onDestroy()
+    }
+
+    private fun dpToPx(dp: Int): Int =
+        (dp * resources.displayMetrics.density).toInt()
+
+    /** Dibuja el interruptor (perilla + color de pista). Solo anima si cambió. */
+    private fun applySwitchState(on: Boolean, animate: Boolean) {
+        val track = findViewById<FrameLayout>(R.id.switchTrack) ?: return
+        val thumb = findViewById<ImageView>(R.id.switchThumb) ?: return
+        val changed = lastSwitchOn != on
+        lastSwitchOn = on
+        track.setBackgroundResource(
+            if (on) R.drawable.bg_switch_on else R.drawable.bg_switch_off
+        )
+        val target = if (on) switchTravelPx else 0f
+        if (animate && changed && switchTravelPx > 0f) {
+            thumb.animate().translationX(target).setDuration(220).start()
+        } else {
+            thumb.translationX = target
+        }
+    }
+
+    private fun toggleConnection() {
+        if (vpnOn) {
+            stopVpn()
+            return
+        }
+        if (localOn) {
+            stopLocal()
+            return
+        }
+        VpnLog.info("Interruptor tocado: conectar.")
+        when (getActiveType()) {
+            TYPE_WIREGUARD -> {
+                // Sin config de WireGuard no se conecta ni se finge conectado.
+                if (getWireGuardConfig().isBlank()) {
+                    VpnLog.error("Sin config WireGuard. Importa el archivo .conf del servidor.")
+                    Toast.makeText(this, "Sin config: importa el archivo .conf del servidor", Toast.LENGTH_LONG).show()
+                    return
+                }
+                val intent = VpnService.prepare(this)
+                if (intent != null) vpnPermissionLauncher.launch(intent) else startVpn()
+            }
+            TYPE_LOCAL -> {
+                val intent = VpnService.prepare(this)
+                if (intent != null) localPermissionLauncher.launch(intent) else startLocal()
+            }
+            else -> {
+                VpnLog.error("Sin config. Importa un archivo .conf o una config local.")
+                Toast.makeText(this, "Sin config: importa un archivo .conf o local", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun resetStats() {
+        prevRx = 0L
+        prevTx = 0L
+        prevSampleMs = System.currentTimeMillis()
+        findViewById<TrafficGraphView>(R.id.graphView)?.clear()
+    }
+
+    private fun startVpn() {
+        val intent = Intent(this, AhorroVpnService::class.java)
+        intent.action = AhorroVpnService.ACTION_START
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
+            serviceStarted = true
+        } catch (e: Exception) {
+            VpnLog.error("No se pudo arrancar el servicio", e)
+            Toast.makeText(this, "No se pudo arrancar el servicio", Toast.LENGTH_SHORT).show()
+            return
+        }
+        vpnOn = true
+        startTimeMs = System.currentTimeMillis()
+        VpnLog.info("VPN encendida desde la app.")
+        resetStats()
+        updateUi()
+        statsHandler.removeCallbacks(statsRunnable)
+        statsHandler.post(statsRunnable)
+    }
+
+    private fun stopVpn() {
+        statsHandler.removeCallbacks(statsRunnable)
+        // ANTES: se mandaba el STOP con startForegroundService(). Eso crea
+        // una instancia NUEVA del servicio solo para pararlo, y esa
+        // instancia llamaba a stopForeground sin haber arrancado el
+        // foreground — ahí se cerraba la app al tocar Desconectar.
+        // AHORA: stopService() no crea ninguna instancia, solo para el
+        // servicio si está corriendo. Y si nunca arrancó, no se le manda nada.
+        if (serviceStarted) {
+            try {
+                val intent = Intent(this, AhorroVpnService::class.java)
+                stopService(intent)
+            } catch (e: Exception) {
+                VpnLog.error("No se pudo parar el servicio", e)
+            }
+            serviceStarted = false
+        }
+        vpnOn = false
+        VpnLog.info("VPN apagada desde la app.")
+        updateUi()
+    }
+
+    // ---- Modo local (sin servidor): proxy local con freno de vídeo ----
+    private fun startLocal() {
+        val intent = Intent(this, LocalProxyVpnService::class.java)
+        intent.action = LocalProxyVpnService.ACTION_START
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
+            localServiceStarted = true
+        } catch (e: Exception) {
+            VpnLog.error("No se pudo arrancar el modo local", e)
+            Toast.makeText(this, "No se pudo arrancar el modo local", Toast.LENGTH_SHORT).show()
+            return
+        }
+        localOn = true
+        startTimeMs = System.currentTimeMillis()
+        VpnLog.info("Modo local encendido desde la app.")
+        resetStats()
+        updateUi()
+        statsHandler.removeCallbacks(statsRunnable)
+        statsHandler.post(statsRunnable)
+    }
+
+    private fun stopLocal() {
+        statsHandler.removeCallbacks(statsRunnable)
+        if (localServiceStarted) {
+            try {
+                val intent = Intent(this, LocalProxyVpnService::class.java)
+                stopService(intent)
+            } catch (e: Exception) {
+                VpnLog.error("No se pudo parar el modo local", e)
+            }
+            localServiceStarted = false
+        }
+        localOn = false
+        VpnLog.info("Modo local apagado desde la app.")
+        updateUi()
+    }
+
+    private fun updateUi() {
+        try {
+            val on = vpnOn || localOn
+            applySwitchState(on, animate = true)
+            val pill = findViewById<TextView>(R.id.txtStatusPill)
+            val title = findViewById<TextView>(R.id.txtStatusTitle)
+            val sub = findViewById<TextView>(R.id.txtStatusSub)
+            val modeValue = findViewById<TextView>(R.id.txtModeValue)
+            val serverValue = findViewById<TextView>(R.id.txtServerValue)
+            val protoValue = findViewById<TextView>(R.id.txtProtoValue)
+            val videoValue = findViewById<TextView>(R.id.txtVideoValue)
+            val used = findViewById<TextView>(R.id.txtUsed)
+            val saved = findViewById<TextView>(R.id.txtSaved)
+            val time = findViewById<TextView>(R.id.txtTime)
+            val rateDown = findViewById<TextView>(R.id.txtRateDown)
+            val rateUp = findViewById<TextView>(R.id.txtRateUp)
+            updateDetails()
+            when {
+                vpnOn -> {
+                    pill?.text = "●  ONLINE"
+                    pill?.setBackgroundResource(R.drawable.bg_pill_on)
+                    title?.text = "Protegido"
+                    sub?.text = "Tu IP está oculta"
+                    sub?.setTextColor(getColor(R.color.lime))
+                    modeValue?.text = "WireGuard"
+                    serverValue?.text = "Servidor Ahorro · 10.8.0.1"
+                    protoValue?.text = "WireGuard"
+                    videoValue?.text = "Shaping en servidor"
+                }
+                localOn -> {
+                    pill?.text = "●  ONLINE"
+                    pill?.setBackgroundResource(R.drawable.bg_pill_on)
+                    title?.text = "Modo local"
+                    sub?.text = "Tu IP es la de Cuba"
+                    sub?.setTextColor(getColor(R.color.gold))
+                    modeValue?.text = "Local"
+                    serverValue?.text = "Sin servidor"
+                    protoValue?.text = "Proxy local"
+                    videoValue?.text = "Freno 0,5 Mbps"
+                }
+                else -> {
+                    pill?.text = "●  OFFLINE"
+                    pill?.setBackgroundResource(R.drawable.bg_pill_off)
+                    title?.text = "Desconectado"
+                    sub?.text = "Tu IP está expuesta"
+                    sub?.setTextColor(getColor(R.color.red))
+                    modeValue?.text = when (getActiveType()) {
+                        TYPE_WIREGUARD -> "WireGuard"
+                        TYPE_LOCAL -> "Local"
+                        else -> "Sin config"
+                    }
+                    serverValue?.text = "No conectado"
+                    protoValue?.text = "—"
+                    videoValue?.text = "—"
+                    used?.text = "0 B"
+                    saved?.text = "0 B"
+                    time?.text = "00:00"
+                    rateDown?.text = "0 B/s"
+                    rateUp?.text = "0 B/s"
+                }
+            }
+        } catch (e: Exception) {
+            VpnLog.error("Fallo al actualizar la pantalla", e)
+        }
+        updateLogUi()
+    }
+
+    private fun updateLogUi() {
+        val txtLog = findViewById<TextView>(R.id.txtLog) ?: return
+        txtLog.text = VpnLog.getText()
+        // El registro baja solo hasta el final, para ver lo último.
+        findViewById<ScrollView>(R.id.logScroll)?.post {
+            findViewById<ScrollView>(R.id.logScroll)?.fullScroll(View.FOCUS_DOWN)
+        }
+    }
+}
