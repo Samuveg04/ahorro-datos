@@ -46,5 +46,18 @@
             </intent-filter>
         </service>
 
+        <!-- MODO LOCAL (sin servidor): VpnService propio que solo
+             intercepta DNS para bloquear anuncios y rastreadores.
+             Lo pidió Sam 18 nov 2026 para probar el sistema sin VPS. -->
+        <service
+            android:name=".LocalDnsVpnService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
     </application>
 </manifest>
